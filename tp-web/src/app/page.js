@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState} from 'react';
 import { useRouter } from 'next/navigation'
 
+import fetchSuggestedAuthors from '@/back/data';
 import Decom from './assets/decom_logo.svg';
 import Ufop from './assets/ufop_logo.png';
 
@@ -11,18 +12,14 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
-  const predefinedSuggestions = ['cachorro', 'cacheado', 'cachoeira', 'cachimbo', 'cadeira', 'camisa'];
-
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
 
-    if (query.length > 0) {
-      const filteredSuggestions = predefinedSuggestions.filter((suggestion) =>
-        suggestion.toLowerCase().startsWith(query.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions);
-    } else {
+    if(query.length > 0) {
+      fetchSuggestedAuthors(query).then(res => setSuggestions(res));
+    }
+    else {
       setSuggestions([]);
     }
   };

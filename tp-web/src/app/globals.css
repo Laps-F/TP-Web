@@ -1,11 +1,13 @@
 /* Definindo variáveis de cor */
 :root {
-  --primary-color: #0070f3;
+  --primary-color: #1e87ff;
   --primary-text-color: #333;
   --secondary-text-color: #fff;
   --background-color: #f0f0f0;
   --border-color: #ccc;
   --highlight-color: #eee;
+  --primary-blue: #1e87ff;
+  --primary-gray: #f0f0f0;
 }
 
 /* Reset básico */
@@ -18,7 +20,12 @@
 html, body {
   height: 100%;
   font-family: 'Arial', sans-serif;
-  background-color: var(--background-color);
+  background: linear-gradient(to bottom, var(--primary-blue) 0%, var(--primary-blue) 20%, var(--primary-gray) 60%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-text-color);
 }
 
 /* Estilos globais */
