@@ -1,27 +1,71 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* Definindo variáveis de cor */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-color: #0070f3;
+  --primary-text-color: #333;
+  --secondary-text-color: #fff;
+  --background-color: #f0f0f0;
+  --border-color: #ccc;
+  --highlight-color: #eee;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+}
+
+/* Estilos globais */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--primary-text-color);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+h1 {
+  font-size: 48px;
+  margin-bottom: 40px;
+  font-weight: bold;
+  color: var(--primary-text-color);
+  text-align: center; /* Centraliza o texto do título */
+  word-wrap: break-word; /* Garante que o texto vai quebrar corretamente em linhas menores */
+
+}
+
+input {
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  width: 100%;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--secondary-text-color);
+  cursor: pointer;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  width: 150px;
+  height: auto;
 }
