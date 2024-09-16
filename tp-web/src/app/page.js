@@ -1,13 +1,13 @@
 'use client';
 
 import { useState} from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 import fetchSuggestedAuthors from '@/back/data';
 import Decom from './assets/decom_logo.svg';
 import Ufop from './assets/ufop_logo.png';
 
-export default function Home() {
+function Home() {
   const router = new useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -26,7 +26,7 @@ export default function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    alert(`Você pesquisou por: ${searchQuery}`);
+    // alert(`Você pesquisou por: ${searchQuery}`);
     setSuggestions([]);
     router.push('/pesquisa')
   };
@@ -71,6 +71,8 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;
 
 const styles = {
   container: {

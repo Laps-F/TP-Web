@@ -34,7 +34,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
   color: var(--primary-text-color);
 }
 
@@ -45,7 +44,6 @@ h1 {
   color: var(--primary-text-color);
   text-align: center; /* Centraliza o texto do título */
   word-wrap: break-word; /* Garante que o texto vai quebrar corretamente em linhas menores */
-
 }
 
 input {
