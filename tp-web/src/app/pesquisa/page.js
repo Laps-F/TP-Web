@@ -1,6 +1,6 @@
 'use client';
 
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { FaHouseChimney } from "react-icons/fa6";
 
@@ -8,13 +8,23 @@ import fetchSuggestedAuthors from '@/back/data';
 
 function Pesquisa() {
     const router = new useRouter();
+    const [author, setAuthor] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+
+    useEffect(() => {
+      // Recuperar informações do sessionStorage
+      const storedData = sessionStorage.getItem('authorDetails');
+      console.log(storedData);
+      if (storedData) {
+        setAuthor(JSON.parse(storedData));
+      }
+    }, []);
 
     const handleSearchChange = (e) => {
         const query = e.target.value;
         setSearchQuery(query);
-
+    
         if(query.length > 0) {
             fetchSuggestedAuthors(query).then(res => setSuggestions(res));
         }
@@ -45,7 +55,7 @@ function Pesquisa() {
             <input 
                 type="text" 
                 placeholder="Digite sua pesquisa..." 
-                value={searchQuery}
+                value={searchQuery.name}
                 onChange={handleSearchChange}
             />
             <button type="submit">Pesquisar</button>
@@ -58,7 +68,7 @@ function Pesquisa() {
                     onClick={() => handleSuggestionClick(suggestion)}
                     style={styles.suggestionItem}
                 >
-                    {suggestion}
+                    {suggestion.name}
                 </li>
                 ))}
             </ul>
@@ -74,7 +84,7 @@ function Pesquisa() {
         <p>Mostrando dados atualmente de:</p>
 
         <div style={styles.nameAuthor}>
-            quadrado da nome do autor
+            {author? author.name : 'Carregando...'}
         </div>
 
         <div style={styles.content}>

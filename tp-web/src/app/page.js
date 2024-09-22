@@ -3,7 +3,7 @@
 import { useState} from 'react';
 import { useRouter } from 'next/navigation';
 
-import fetchSuggestedAuthors from '@/back/data';
+import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex } from '@/back/data';
 import Decom from './assets/decom_logo.svg';
 import Ufop from './assets/ufop_logo.png';
 
@@ -11,6 +11,7 @@ function Home() {
   const router = new useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [author, setAuthor] = useState(null);
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -26,9 +27,11 @@ function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // alert(`Você pesquisou por: ${searchQuery}`);
+    // alert(`Você pesquisou por: ${searchQuery.id}`);
+    fetchAuthorFromOpenAlex(searchQuery.id).then(res => setAuthor(res));
     setSuggestions([]);
-    router.push('/pesquisa')
+    sessionStorage.setItem('authorDetails', JSON.stringify(author));
+    router.push('/pesquisa');
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -44,7 +47,7 @@ function Home() {
         <input 
           type="text" 
           placeholder="Digite sua pesquisa..." 
-          value={searchQuery}
+          value={searchQuery.name}
           onChange={handleSearchChange}
         />
         <button type="submit">Pesquisar</button>
@@ -57,7 +60,7 @@ function Home() {
                 onClick={() => handleSuggestionClick(suggestion)}
                 style={styles.suggestionItem}
               >
-                {suggestion}
+                {suggestion.name}
               </li>
             ))}
           </ul>

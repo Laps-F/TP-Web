@@ -8,16 +8,17 @@ async function fetchSuggestedAuthors(query) {
         }
 
         const data = await response.json();
-        const array = data.results.map((item => item.display_name)).slice(0,5);
-        console.log('Dados da API OpenAlex:', array);
+        const array = data.results.map(item => ({ name: item.display_name, id: item.id })).slice(0,5);
+        // console.log('Dados da API OpenAlex:', array);
         return array;
     } catch (error) {
         console.error('Erro ao buscar dados da API:', error);
     }
 }
-async function fetchAuthorsFromOpenAlex() {
-    const apiURL = 'https://api.openalex.org/authors?per-page=100';
+export async function fetchAuthorFromOpenAlex(query) {
+    const apiURL = `https://api.openalex.org/authors?search=${query}`;
 
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
     try {
         const response = await fetch(apiURL);
         if (!response.ok) {
@@ -25,9 +26,9 @@ async function fetchAuthorsFromOpenAlex() {
         }
 
         const data = await response.json();
-        const array = data.results.map((item) => ({author: item.display_name}));
-        // console.log('Dados da API OpenAlex:', array);
-        return array;
+        // const array = data.results.map((item) => ({author: item.display_name}));
+        console.log('Dados da API OpenAlex - Author:', data);
+        return data;
     } catch (error) {
         console.error('Erro ao buscar dados da API:', error);
     }
