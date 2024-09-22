@@ -5,6 +5,14 @@ import { useRouter } from 'next/navigation';
 import { FaHouseChimney } from "react-icons/fa6";
 
 import fetchSuggestedAuthors from '@/back/data';
+import ArticleCard from '../components/ArticleCard';
+
+const article = {
+  title: "Deep Learning for Image Recognitionnnnnnnnnnnnnnnnnnnnnnnnnn",
+  year: 2021,
+  authors: ["John Doe", "Jane Smith", "Alice Brown"],
+  citations: 125
+};
 
 function Pesquisa() {
     const router = new useRouter();
@@ -15,6 +23,7 @@ function Pesquisa() {
     useEffect(() => {
       // Recuperar informações do sessionStorage
       const storedData = sessionStorage.getItem('authorDetails');
+      console.log('storedData');
       console.log(storedData);
       if (storedData) {
         setAuthor(JSON.parse(storedData));
@@ -89,7 +98,12 @@ function Pesquisa() {
 
         <div style={styles.content}>
             <div style={styles.articles}>
-                quadrado da lista de artigos do autorrrrrrrrrrrrrrrrrrrrrrr
+                <ArticleCard 
+                  title={article.title}
+                  year={article.year}
+                  authors={article.authors}
+                  citations={article.citations}
+                />
             </div>
     
             <div style={styles.stats}>

@@ -27,9 +27,11 @@ function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // alert(`Você pesquisou por: ${searchQuery.id}`);
+    alert(`Você pesquisou por: ${searchQuery.id}`);
     fetchAuthorFromOpenAlex(searchQuery.id).then(res => setAuthor(res));
     setSuggestions([]);
+    console.log('hora da pesquisa:')
+    console.log(author);
     sessionStorage.setItem('authorDetails', JSON.stringify(author));
     router.push('/pesquisa');
   };
