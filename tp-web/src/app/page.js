@@ -11,7 +11,7 @@ function Home() {
   const router = new useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [author, setAuthor] = useState(null);
+  // const [author, setAuthor] = useState(null);
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -25,13 +25,10 @@ function Home() {
     }
   };
 
-  const handleSearch = (e) => {
+  async function handleSearch (e) {
     e.preventDefault();
-    alert(`Você pesquisou por: ${searchQuery.id}`);
-    fetchAuthorFromOpenAlex(searchQuery.id).then(res => setAuthor(res));
+    const author = await fetchAuthorFromOpenAlex(searchQuery.id.split('/').pop())
     setSuggestions([]);
-    console.log('hora da pesquisa:')
-    console.log(author);
     sessionStorage.setItem('authorDetails', JSON.stringify(author));
     router.push('/pesquisa');
   };

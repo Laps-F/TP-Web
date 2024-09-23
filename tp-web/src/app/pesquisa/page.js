@@ -23,7 +23,6 @@ function Pesquisa() {
     useEffect(() => {
       // Recuperar informações do sessionStorage
       const storedData = sessionStorage.getItem('authorDetails');
-      console.log('storedData');
       console.log(storedData);
       if (storedData) {
         setAuthor(JSON.parse(storedData));
@@ -77,7 +76,7 @@ function Pesquisa() {
                     onClick={() => handleSuggestionClick(suggestion)}
                     style={styles.suggestionItem}
                 >
-                    {suggestion.name}
+                    {suggestion? suggestion.name : ''}
                 </li>
                 ))}
             </ul>
@@ -93,7 +92,7 @@ function Pesquisa() {
         <p>Mostrando dados atualmente de:</p>
 
         <div style={styles.nameAuthor}>
-            {author? author.name : 'Carregando...'}
+            {author? author.display_name : 'Carregando...'}
         </div>
 
         <div style={styles.content}>
