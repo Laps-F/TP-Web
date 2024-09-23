@@ -3,7 +3,7 @@
 import { useState} from 'react';
 import { useRouter } from 'next/navigation';
 
-import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex } from '@/back/data';
+import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchFromOpenAlex} from '@/back/data';
 import Decom from './assets/decom_logo.svg';
 import Ufop from './assets/ufop_logo.png';
 
@@ -28,6 +28,8 @@ function Home() {
   async function handleSearch (e) {
     e.preventDefault();
     const author = await fetchAuthorFromOpenAlex(searchQuery.id.split('/').pop())
+    // const articles = await fetchFromOpenAlex(author.works_api_url)
+    // console.log(articles)
     setSuggestions([]);
     sessionStorage.setItem('authorDetails', JSON.stringify(author));
     router.push('/pesquisa');

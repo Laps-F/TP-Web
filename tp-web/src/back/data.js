@@ -24,8 +24,10 @@ export async function fetchAuthorFromOpenAlex(query) {
             throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
         }
         
-        const keys = ["display_name"]
+        const keys = ["display_name", "works_api_url"]
         const data = await response.json();
+        console.log('Dados da API OpenAlex:', data);
+
         const newObj = keys.reduce((acc, key) => {
             if (data[key]) {
               acc[key] = data[key];
@@ -36,6 +38,24 @@ export async function fetchAuthorFromOpenAlex(query) {
     } catch (error) {
         console.error('Erro ao buscar dados da API:', error);
     }
+}
+
+export async function fetchFromOpenAlex(query){
+    const apiURL = query;
+
+    try {
+        const response = await fetch(apiURL);
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('Dados da API OpenAlex:', data);
+
+        return data;
+    } catch (error) {
+        console.error('Erro ao buscar dados da API:', error);
+    }    
 }
 
 function formatDate(dateString) {
