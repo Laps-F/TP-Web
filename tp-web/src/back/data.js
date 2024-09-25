@@ -26,7 +26,7 @@ export async function fetchAuthorFromOpenAlex(query) {
         
         const keys = ["display_name", "works_api_url"]
         const data = await response.json();
-        console.log('Dados da API OpenAlex:', data);
+        // console.log('Dados da API OpenAlex:', data);
 
         const newObj = keys.reduce((acc, key) => {
             if (data[key]) {
@@ -50,8 +50,7 @@ export async function fetchFromOpenAlex(query){
         }
         
         const data = await response.json();
-        console.log('Dados da API OpenAlex:', data);
-
+        // console.log('Dados da API OpenAlex:', data);
         return data;
     } catch (error) {
         console.error('Erro ao buscar dados da API:', error);

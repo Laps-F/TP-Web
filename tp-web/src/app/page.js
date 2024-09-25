@@ -11,7 +11,7 @@ function Home() {
   const router = new useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  // const [author, setAuthor] = useState(null);
+  const [author, setAuthor] = useState(null);
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -27,16 +27,17 @@ function Home() {
 
   async function handleSearch (e) {
     e.preventDefault();
-    const author = await fetchAuthorFromOpenAlex(searchQuery.id.split('/').pop())
-    // const articles = await fetchFromOpenAlex(author.works_api_url)
-    // console.log(articles)
     setSuggestions([]);
-    sessionStorage.setItem('authorDetails', JSON.stringify(author));
+    const authorObj = await fetchAuthorFromOpenAlex(author.id.split('/').pop())
+    const articlesList = await fetchFromOpenAlex(authorObj.works_api_url)
+    sessionStorage.setItem('authorDetails', JSON.stringify(authorObj));
+    sessionStorage.setItem('articlesListDetails', JSON.stringify(articlesList));
     router.push('/pesquisa');
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setSearchQuery(suggestion);
+    setAuthor(suggestion);
+    setSearchQuery(suggestion.name);
     setSuggestions([]);
   };
 
@@ -48,7 +49,7 @@ function Home() {
         <input 
           type="text" 
           placeholder="Digite sua pesquisa..." 
-          value={searchQuery.name}
+          value={searchQuery}
           onChange={handleSearchChange}
         />
         <button type="submit">Pesquisar</button>
