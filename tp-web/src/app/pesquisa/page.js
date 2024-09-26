@@ -11,22 +11,70 @@ function Pesquisa() {
     const router = new useRouter();
     const [author, setAuthor] = useState(null);
     const [articlesList, setArticlesList] = useState([]);
+    const [workList, setWorkList] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+    const [authorStats, setAuthorStats] = useState({
+      totalWorks: 0,
+      firstAuthorWorks: 0,
+      coAuthorWorks: 0,
+  });
 
     useEffect(() => {
       // Recuperar informações do sessionStorage
       const storedAuthorData = sessionStorage.getItem('authorDetails');
       const storedArticlesListData = sessionStorage.getItem('articlesListDetails');
+      const storedAllWorks = sessionStorage.getItem('workListDetails');
       // console.log(storedAuthorData);
-      // console.log(storedArticlesListData);
+      //console.log(storedArticlesListData);
       if (storedAuthorData) {
         setAuthor(JSON.parse(storedAuthorData));
       }
       if(storedArticlesListData) {
         setArticlesList(JSON.parse(storedArticlesListData));
       }
+      if(storedAllWorks) {
+        setWorkList(JSON.parse(storedAllWorks));
+      }
+
+      // calculateAuthorStats(articlesList);
     }, []);
+
+    useEffect(() => {
+      calculateAuthorStats(articlesList);
+    }, [articlesList]);
+
+    const calculateAuthorStats = (articles) => {
+      console.log('articles: ', articles);
+      let totalWorks = 0;
+      let firstAuthorWorks = 0;
+      let coAuthorWorks = 0;
+
+      // articles.forEach(article => {
+      //     const { authorships } = article;
+      //     console.log('authorships: ', authorships);
+      //     const isFirstAuthor = authorships.some(authorship => authorship.author_position === 'first');
+      //     const isCoAuthor = authorships.some(authorship => authorship.author_position !== 'first');
+
+      //     if (isFirstAuthor) firstAuthorWorks++;
+      //     if (isCoAuthor) coAuthorWorks++;
+      //     totalWorks++;
+      // });
+      for (let i = 0; i < articles.length; i++) {
+        if (articles[i].author_position === 'first')
+          firstAuthorWorks++;
+        else if (articles[i].author_position !== 'first')
+          coAuthorWorks++;
+        totalWorks++;
+      }
+
+      setAuthorStats({
+          totalWorks,
+          firstAuthorWorks,
+          coAuthorWorks
+      });
+      console.log('total works: ' + totalWorks)
+  };
 
     const handleSearchChange = (e) => {
         const query = e.target.value;
@@ -100,7 +148,11 @@ function Pesquisa() {
             </div>
     
             <div style={styles.stats}>
-                quadrado de estatisticas do autorrrrrrrrrrrrrrrrrrrrrrrrrrr
+
+              <h3>Estatísticas do Autor</h3>
+              <p>Total de trabalhos: {authorStats.totalWorks}</p>
+              <p>Trabalhos como autor principal: {authorStats.firstAuthorWorks}</p>
+              <p>Trabalhos como co-autor: {authorStats.coAuthorWorks}</p>
             </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { useState} from 'react';
 import { useRouter } from 'next/navigation';
 
-import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchFromOpenAlex} from '@/back/data';
+import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchFromOpenAlex, fetchWorkFromOpenAlex} from '@/back/data';
 import Decom from './assets/decom_logo.svg';
 import Ufop from './assets/ufop_logo.png';
 
@@ -29,9 +29,19 @@ function Home() {
     e.preventDefault();
     setSuggestions([]);
     const authorObj = await fetchAuthorFromOpenAlex(author.id.split('/').pop())
+    console.log('author: ', authorObj)
+
+
+    const workList = await fetchWorkFromOpenAlex()
+    console.log('workList: ', workList)
+
     const articlesList = await fetchFromOpenAlex(authorObj.works_api_url)
+    console.log('articlesList: ', articlesList.results)
+
     sessionStorage.setItem('authorDetails', JSON.stringify(authorObj));
-    sessionStorage.setItem('articlesListDetails', JSON.stringify(articlesList));
+    sessionStorage.setItem('articlesListDetails', JSON.stringify(articlesList.results));
+    sessionStorage.setItem('workListDetails', JSON.stringify(workList));
+
     router.push('/pesquisa');
   };
 

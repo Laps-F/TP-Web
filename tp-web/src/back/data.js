@@ -28,14 +28,34 @@ export async function fetchAuthorFromOpenAlex(query) {
         const data = await response.json();
         // console.log('Dados da API OpenAlex:', data);
 
-        const newObj = keys.reduce((acc, key) => {
-            if (data[key]) {
-              acc[key] = data[key];
-            }
-            return acc;
-          }, {});
-        return newObj;
+        // const newObj = keys.reduce((acc, key) => {
+        //     if (data[key]) {
+        //       acc[key] = data[key];
+        //     }
+        //     return acc;
+        //   }, {});
+        // return newObj;
+        console.log(data);
+        return data;
     } catch (error) {
+        console.error('Erro ao buscar dados da API:', error);
+    }
+}
+
+export async function fetchWorkFromOpenAlex() {
+    const apiURL = `https://api.openalex.org/works`;
+
+    try {
+        const response = await fetch(apiURL);
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("work data")
+
+        return data;
+    } catch(error) {
         console.error('Erro ao buscar dados da API:', error);
     }
 }
