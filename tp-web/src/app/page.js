@@ -3,7 +3,7 @@
 import { useState} from 'react';
 import { useRouter } from 'next/navigation';
 
-import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex } from '@/back/data';
+import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchFromOpenAlex} from '@/back/data';
 import Decom from './assets/decom_logo.svg';
 import Ufop from './assets/ufop_logo.png';
 
@@ -25,19 +25,19 @@ function Home() {
     }
   };
 
-  const handleSearch = (e) => {
+  async function handleSearch (e) {
     e.preventDefault();
-    alert(`Você pesquisou por: ${searchQuery.id}`);
-    fetchAuthorFromOpenAlex(searchQuery.id).then(res => setAuthor(res));
     setSuggestions([]);
-    console.log('hora da pesquisa:')
-    console.log(author);
-    sessionStorage.setItem('authorDetails', JSON.stringify(author));
+    const authorObj = await fetchAuthorFromOpenAlex(author.id.split('/').pop())
+    const articlesList = await fetchFromOpenAlex(authorObj.works_api_url)
+    sessionStorage.setItem('authorDetails', JSON.stringify(authorObj));
+    sessionStorage.setItem('articlesListDetails', JSON.stringify(articlesList));
     router.push('/pesquisa');
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setSearchQuery(suggestion);
+    setAuthor(suggestion);
+    setSearchQuery(suggestion.name);
     setSuggestions([]);
   };
 
@@ -49,7 +49,7 @@ function Home() {
         <input 
           type="text" 
           placeholder="Digite sua pesquisa..." 
-          value={searchQuery.name}
+          value={searchQuery}
           onChange={handleSearchChange}
         />
         <button type="submit">Pesquisar</button>

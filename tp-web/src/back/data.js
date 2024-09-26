@@ -18,20 +18,43 @@ async function fetchSuggestedAuthors(query) {
 export async function fetchAuthorFromOpenAlex(query) {
     const apiURL = `https://api.openalex.org/authors/${query}`;
 
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
     try {
         const response = await fetch(apiURL);
         if (!response.ok) {
             throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
         }
-
+        
+        const keys = ["display_name", "works_api_url"]
         const data = await response.json();
-        // const array = data.results.map((item) => ({author: item.display_name}));
-        console.log('Dados da API OpenAlex - Author:', data);
-        return data;
+        // console.log('Dados da API OpenAlex:', data);
+
+        const newObj = keys.reduce((acc, key) => {
+            if (data[key]) {
+              acc[key] = data[key];
+            }
+            return acc;
+          }, {});
+        return newObj;
     } catch (error) {
         console.error('Erro ao buscar dados da API:', error);
     }
+}
+
+export async function fetchFromOpenAlex(query){
+    const apiURL = query;
+
+    try {
+        const response = await fetch(apiURL);
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        // console.log('Dados da API OpenAlex:', data);
+        return data;
+    } catch (error) {
+        console.error('Erro ao buscar dados da API:', error);
+    }    
 }
 
 function formatDate(dateString) {

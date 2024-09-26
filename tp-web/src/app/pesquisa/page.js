@@ -5,28 +5,26 @@ import { useRouter } from 'next/navigation';
 import { FaHouseChimney } from "react-icons/fa6";
 
 import fetchSuggestedAuthors from '@/back/data';
-import ArticleCard from '../components/ArticleCard';
-
-const article = {
-  title: "Deep Learning for Image Recognitionnnnnnnnnnnnnnnnnnnnnnnnnn",
-  year: 2021,
-  authors: ["John Doe", "Jane Smith", "Alice Brown"],
-  citations: 125
-};
+import ArticlesList from '../components/ArticlesList';
 
 function Pesquisa() {
     const router = new useRouter();
     const [author, setAuthor] = useState(null);
+    const [articlesList, setArticlesList] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
 
     useEffect(() => {
       // Recuperar informações do sessionStorage
-      const storedData = sessionStorage.getItem('authorDetails');
-      console.log('storedData');
-      console.log(storedData);
-      if (storedData) {
-        setAuthor(JSON.parse(storedData));
+      const storedAuthorData = sessionStorage.getItem('authorDetails');
+      const storedArticlesListData = sessionStorage.getItem('articlesListDetails');
+      // console.log(storedAuthorData);
+      // console.log(storedArticlesListData);
+      if (storedAuthorData) {
+        setAuthor(JSON.parse(storedAuthorData));
+      }
+      if(storedArticlesListData) {
+        setArticlesList(JSON.parse(storedArticlesListData));
       }
     }, []);
 
@@ -77,7 +75,7 @@ function Pesquisa() {
                     onClick={() => handleSuggestionClick(suggestion)}
                     style={styles.suggestionItem}
                 >
-                    {suggestion.name}
+                    {suggestion? suggestion.name : ''}
                 </li>
                 ))}
             </ul>
@@ -93,17 +91,12 @@ function Pesquisa() {
         <p>Mostrando dados atualmente de:</p>
 
         <div style={styles.nameAuthor}>
-            {author? author.name : 'Carregando...'}
+            {author? author.display_name : 'Carregando...'}
         </div>
 
         <div style={styles.content}>
             <div style={styles.articles}>
-                <ArticleCard 
-                  title={article.title}
-                  year={article.year}
-                  authors={article.authors}
-                  citations={article.citations}
-                />
+                <ArticlesList articles={articlesList}/>
             </div>
     
             <div style={styles.stats}>
@@ -114,7 +107,7 @@ function Pesquisa() {
     </div>
   );
 }
-
+  
 export default Pesquisa;
 
 const styles = {
