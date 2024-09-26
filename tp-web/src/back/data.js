@@ -16,7 +16,7 @@ async function fetchSuggestedAuthors(query) {
     }
 }
 export async function fetchAuthorFromOpenAlex(query) {
-    const apiURL = `https://api.openalex.org/authors?search=${query}`;
+    const apiURL = `https://api.openalex.org/authors/${query}`;
 
     console.log('aaaaaaaaaaaaaaaaaaaaaaaa');
     try {
