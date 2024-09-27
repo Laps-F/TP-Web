@@ -11,6 +11,7 @@ function Pesquisa() {
     const router = new useRouter();
     const [author, setAuthor] = useState(null);
     const [articlesList, setArticlesList] = useState([]);
+    const [authorshipList, setAuthorshipList] = useState([]);
     const [workList, setWorkList] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
@@ -24,6 +25,7 @@ function Pesquisa() {
       // Recuperar informações do sessionStorage
       const storedAuthorData = sessionStorage.getItem('authorDetails');
       const storedArticlesListData = sessionStorage.getItem('articlesListDetails');
+      const storedAuthorshipData = sessionStorage.getItem('authorshipListDetails');
       const storedAllWorks = sessionStorage.getItem('workListDetails');
       // console.log(storedAuthorData);
       //console.log(storedArticlesListData);
@@ -36,13 +38,16 @@ function Pesquisa() {
       if(storedAllWorks) {
         setWorkList(JSON.parse(storedAllWorks));
       }
+      if(storedAuthorshipData){
+        setAuthorshipList(JSON.parse(storedAuthorshipData));
+      }
 
       // calculateAuthorStats(articlesList);
     }, []);
 
     useEffect(() => {
-      calculateAuthorStats(articlesList);
-    }, [articlesList]);
+      calculateAuthorStats(authorshipList);
+    }, [authorshipList]);
 
     const calculateAuthorStats = (articles) => {
       console.log('articles: ', articles);
@@ -61,9 +66,12 @@ function Pesquisa() {
       //     totalWorks++;
       // });
       for (let i = 0; i < articles.length; i++) {
-        if (articles[i].author_position === 'first')
+        let authorList = articles[i].authorships
+        if (authorList.some(a => a.author.id === author.id && a.author_position === 'first')){
+          console.log('oi')
           firstAuthorWorks++;
-        else if (articles[i].author_position !== 'first')
+        }
+        else if (authorList.some(a => a.author.id === author.id && a.author_position !== 'first'))
           coAuthorWorks++;
         totalWorks++;
       }
