@@ -43,7 +43,7 @@ function Home() {
 
     sessionStorage.setItem('authorDetails', JSON.stringify(authorObj));
     sessionStorage.setItem('articlesListDetails', JSON.stringify(articlesList.results));
-    sessionStorage.setItem('authorshipListDetails', JSON.stringify(authorshipList));
+    sessionStorage.setItem('authorshipListDetails', JSON.stringify(authorshipList.results));
     sessionStorage.setItem('workListDetails', JSON.stringify(workList));
 
     router.push('/pesquisa');

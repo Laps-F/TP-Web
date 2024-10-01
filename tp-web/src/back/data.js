@@ -43,6 +43,20 @@ export async function fetchAuthorFromOpenAlex(query) {
 }
 
 export async function fetchAuthorshipFromOpenAlex(id){
+    const apiURL = `https://api.openalex.org/works?filter=authorships.author.id:${id}&per-page=200`;
+
+    try {
+        const response = await fetch(apiURL);
+        if (!response.ok) {
+            throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        return data;
+    } catch(error) {
+        console.error('Erro ao buscar dados da API:', error);
+    }
     // const apiURL = `https://api.openalex.org/works?filter=authorships.author.id:${id}&per-page=200&cursor=*`;
 
     // try {
@@ -67,30 +81,30 @@ export async function fetchAuthorshipFromOpenAlex(id){
     //     console.error('Erro ao buscar dados da API:', error);
     // }
 
-    let allResults = [];
-    let cursor = '*';
-    const perPage = 200;
+    // let allResults = [];
+    // let cursor = '*';
+    // const perPage = 200;
 
-    while (cursor) {
-        const url = `https://api.openalex.org/works?filter=authorships.author.id:${id}&per-page=${perPage}&cursor=${cursor}`;
+    // while (cursor) {
+    //     const url = `https://api.openalex.org/works?filter=authorships.author.id:${id}&per-page=${perPage}&cursor=${cursor}`;
         
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
+    //     try {
+    //         const response = await fetch(url);
+    //         const data = await response.json();
             
-            // Adiciona os resultados da página atual à lista
-            allResults = allResults.concat(data.results);
+    //         // Adiciona os resultados da página atual à lista
+    //         allResults = allResults.concat(data.results);
             
-            // Atualiza o cursor para a próxima página
-            cursor = data.meta.next_cursor;
+    //         // Atualiza o cursor para a próxima página
+    //         cursor = data.meta.next_cursor;
 
-        } catch (error) {
-            console.error('Erro ao buscar dados:', error);
-            break;  // Se houver erro, sair do loop
-        }
-    }
+    //     } catch (error) {
+    //         console.error('Erro ao buscar dados:', error);
+    //         break;  // Se houver erro, sair do loop
+    //     }
+    // }
 
-    return allResults;
+    // return allResults;
 }
 
 export async function fetchWorkFromOpenAlex() {

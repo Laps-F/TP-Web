@@ -157,10 +157,34 @@ function Pesquisa() {
     
             <div style={styles.stats}>
 
-              <h3>Estatísticas do Autor</h3>
-              <p>Total de trabalhos: {authorStats.totalWorks}</p>
-              <p>Trabalhos como autor principal: {authorStats.firstAuthorWorks}</p>
-              <p>Trabalhos como co-autor: {authorStats.coAuthorWorks}</p>
+              <div style={styles.containerData}>
+
+                <div style={styles.row}>
+                  <p>Total de trabalhos:</p>
+                  <div style={styles.circle}>{authorStats.totalWorks}</div>
+
+                  <div style={styles.filterContainer}>
+                    <div style={styles.rectangle}>
+                      <div style={styles.filterField}>
+                        <output style={styles.outputField}>Instituição</output>
+                        <output style={styles.outputField}>Co-Author</output>
+                        <output style={styles.outputField}>Tópico</output>
+                        <button style={styles.buttonFilter}>Filtrar</button>
+                      </div>
+                    </div>
+                  </div>
+                
+                </div>
+
+
+                <div style={styles.row}>
+                  <p>Trabalhos como Autor:</p>
+                  <div style={styles.circleMinus}>{authorStats.firstAuthorWorks}</div>
+
+                  <p>Trabalhos como Co-Autor:</p>
+                  <div style={styles.circleMinus}>{authorStats.coAuthorWorks}</div>
+                </div>
+              </div>         
             </div>
         </div>
       </div>
@@ -170,36 +194,129 @@ function Pesquisa() {
   
 export default Pesquisa;
 
+// const styles = {
+//   container: {
+//     minHeight: '100vh',
+//     backgroundColor: 'var(--primary-gray)', // Fundo cinza
+//     display: 'flex',
+//     flexDirection: 'column',
+//   },
+//   header: {
+//     width: '100vw', // Cobre toda a largura da tela
+//     padding: '20px',
+//     backgroundImage: 'linear-gradient(to right, #2364f0, #69aaf5, #add8e6)', // Fading de roxo azulado para azul claro
+//     color: 'var(--secondary-text-color)',
+//     display: 'flex',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//     boxSizing: 'border-box', // Evita que padding afete o width
+//   },
+//   searchContainer: {
+//     display: 'flex',
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     position: 'relative', // Necessário para o posicionamento das sugestões
+//     width: '100%',
+//     maxWidth: '500px',
+//   },
+//   suggestionsList: {
+//     position: 'absolute',
+//     top: '110%', // Logo abaixo do campo de pesquisa
+//     left: '0',
+//     width: '100%', // Ocupa o mesmo espaço do input
+//     backgroundColor: 'var(--secondary-text-color)',
+//     border: '1px solid var(--border-color)',
+//     borderRadius: '5px',
+//     zIndex: 1,
+//   },
+//   suggestionItem: {
+//     padding: '10px',
+//     cursor: 'pointer',
+//     borderBottom: '1px solid var(--highlight-color)',
+//     color: 'var(--primary-text-color)',
+//   },
+//   appName: {
+//     display: 'flex',
+//     alignItems: 'center',
+//     width: '10vw',
+//   },
+//   title: {
+//     fontSize: '2rem',
+//     margin: 0,
+//   },
+//   homeButton: {
+//     justifyContent: 'center',
+//     paddingRight: '3vw',
+//   },
+//   nameAuthor: {
+//     width: '100%', // Garante que o conteúdo também cubra toda a largura
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     color: 'var(--primary-text-color)',
+//     backgroundColor: 'white',
+//     border: '1px solid var(--border-color)',
+//   },
+//   contentContainer: {
+//     flex: 1,
+//     width: '100%', // Garante que o conteúdo também cubra toda a largura
+//     display: 'flex',
+//     flexDirection: 'column',
+//     justifyContent: 'space-evenly',
+//     alignItems: 'center',
+//     color: 'var(--primary-text-color)',
+//   },
+//   content: {
+//     width: '100%', // Garante que o conteúdo também cubra toda a largura
+//     display: 'flex',
+//     justifyContent: 'space-around',
+//     alignItems: 'center',
+//     color: 'var(--primary-text-color)',
+    
+//   },
+//   articles: {
+//     backgroundColor: 'white',
+//     border: '1px solid var(--border-color)',
+//     justifyContent: 'center',
+//     minHeight: '60vh',
+//   },
+//   stats: {
+//     backgroundColor: 'white',
+//     border: '1px solid var(--border-color)',
+//     justifyContent: 'center',
+//     minHeight: '60vh',
+
+//   },
+  
 const styles = {
   container: {
     minHeight: '100vh',
-    backgroundColor: 'var(--primary-gray)', // Fundo cinza
+    backgroundColor: 'var(--primary-gray)',
     display: 'flex',
     flexDirection: 'column',
   },
   header: {
-    width: '100vw', // Cobre toda a largura da tela
+    width: '100vw',
     padding: '20px',
-    backgroundImage: 'linear-gradient(to right, #2364f0, #69aaf5, #add8e6)', // Fading de roxo azulado para azul claro
+    backgroundImage: 'linear-gradient(to right, #2364f0, #69aaf5, #add8e6)',
     color: 'var(--secondary-text-color)',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    boxSizing: 'border-box', // Evita que padding afete o width
   },
   searchContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'relative', // Necessário para o posicionamento das sugestões
+    position: 'relative',
     width: '100%',
     maxWidth: '500px',
   },
   suggestionsList: {
     position: 'absolute',
-    top: '110%', // Logo abaixo do campo de pesquisa
+    top: '110%',
     left: '0',
-    width: '100%', // Ocupa o mesmo espaço do input
+    width: '100%',
     backgroundColor: 'var(--secondary-text-color)',
     border: '1px solid var(--border-color)',
     borderRadius: '5px',
@@ -225,7 +342,7 @@ const styles = {
     paddingRight: '3vw',
   },
   nameAuthor: {
-    width: '100%', // Garante que o conteúdo também cubra toda a largura
+    width: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -235,32 +352,98 @@ const styles = {
   },
   contentContainer: {
     flex: 1,
-    width: '100%', // Garante que o conteúdo também cubra toda a largura
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    color: 'var(--primary-text-color)',
   },
   content: {
-    width: '100%', // Garante que o conteúdo também cubra toda a largura
+    width: '100%',
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    color: 'var(--primary-text-color)',
-    
   },
   articles: {
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
-    justifyContent: 'center',
     minHeight: '60vh',
   },
   stats: {
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
-    justifyContent: 'center',
     minHeight: '60vh',
-
-  }
+    height: '70vh',
+    padding: '0px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  containerData: {
+    width: '100%',
+    height: '100vh',
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    height: '50%',
+    marginBottom: '10px',
+  },
+  circle: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    backgroundColor: '#69aaf5',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '10px',
+  },
+  circleMinus: {
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    backgroundColor: '#add8e6',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '10px',
+  },
+  rectangle: {
+    width: '100%',
+    height: '80px',
+    backgroundColor: '#2364f0',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginBottom: '20px',
+  },
+  filterContainer: {
+    width: '100%',
+  },
+  filterField: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  outputField: {
+    color: 'white',
+    fontSize: '1rem',
+    paddingRight: '20px',
+  },
+  buttonFilter: {
+    padding: '10px 20px',
+    backgroundColor: '#69aaf5',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
 };
+
