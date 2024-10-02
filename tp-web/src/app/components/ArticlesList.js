@@ -11,18 +11,22 @@ const article = {
 };
 
 function ArticlesList({ articles } ) {
+    console.log('articles insine ArticleList: ', articles);
     return (
         <div className= {styles.articlesList}>
-            {console.log(articles.results)}
-            {/* {articles.result.map((article, index) => (
-                <ArticleCard
-                    key={index}
-                    title={article.title}
-                    year={article.created_date}
-                    authors={"teste"}
-                    citations={article.cited_by_count}
-                />
-            ))} */}
+            {articles && articles.length > 0 ? (
+                articles.map((article, index) => (
+                    <ArticleCard
+                        key={index}
+                        title={article.title}
+                        year={article.created_date}
+                        authors={["John Doe", "Jane Smith", "Alice Brown"]} // Ajuste conforme necessário
+                        citations={article.cited_by_count}
+                    />
+                ))
+            ) : (
+                <p>Loading articles...</p> // Mensagem de carregamento ou fallback
+            )}
         </div>
     );
 };

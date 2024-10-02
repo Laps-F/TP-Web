@@ -84,6 +84,16 @@ function Pesquisa() {
       console.log('total works: ' + totalWorks)
   };
 
+    // const [a, setA] = useState([]);
+    // useEffect(() => {
+    //   generateListArticles(articlesList);
+    // }, [articlesList]);
+
+    // const generateListArticles = (articles) => {
+    //   setA(articles)
+    // }
+
+
     const handleSearchChange = (e) => {
         const query = e.target.value;
         setSearchQuery(query);
@@ -157,13 +167,10 @@ function Pesquisa() {
     
             <div style={styles.stats}>
 
-              <div style={styles.containerData}>
-
                 <div style={styles.row}>
                   <p>Total de trabalhos:</p>
                   <div style={styles.circle}>{authorStats.totalWorks}</div>
 
-                  <div style={styles.filterContainer}>
                     <div style={styles.rectangle}>
                       <div style={styles.filterField}>
                         <output style={styles.outputField}>Instituição</output>
@@ -172,7 +179,7 @@ function Pesquisa() {
                         <button style={styles.buttonFilter}>Filtrar</button>
                       </div>
                     </div>
-                  </div>
+
                 
                 </div>
 
@@ -183,8 +190,7 @@ function Pesquisa() {
 
                   <p>Trabalhos como Co-Autor:</p>
                   <div style={styles.circleMinus}>{authorStats.coAuthorWorks}</div>
-                </div>
-              </div>         
+                </div>         
             </div>
         </div>
       </div>
@@ -365,36 +371,36 @@ const styles = {
     alignItems: 'center',
   },
   articles: {
+    display: 'flex',
+    flexDirection: 'column',
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
     minHeight: '60vh',
+    height: '70vh',
+    width: '80vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    overflowX: 'auto',
   },
   stats: {
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
     minHeight: '60vh',
     height: '70vh',
-    padding: '0px',
+    width: '80vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-  },
-  containerData: {
-    width: '100%',
-    height: '100vh',
-    padding: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
   row: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    height: '50%',
-    marginBottom: '10px',
+    width: '90%',
+    height: '100%',
+    margin: '1vh',
   },
   circle: {
     width: '50px',
@@ -404,7 +410,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '10px',
   },
   circleMinus: {
     width: '40px',
@@ -417,21 +422,25 @@ const styles = {
     marginLeft: '10px',
   },
   rectangle: {
-    width: '100%',
-    height: '80px',
-    backgroundColor: '#2364f0',
     display: 'flex',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: '20px',
+    width: '80%',
+    height: '80%',
+    backgroundColor: '#2364f0',
+  
   },
   filterContainer: {
+    display: 'flexbox',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
   },
   filterField: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'column',
   },
   outputField: {
     color: 'white',

@@ -1,3 +1,4 @@
 .articlesList {
     display: flex;
+    flex-direction: column;
 }
