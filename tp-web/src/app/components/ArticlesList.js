@@ -13,7 +13,6 @@ function ArticlesList({ articles, authorStats} ) {
 
     const openModal = (article) => {
         setSelectedArticle(article);
-        console.log(article);
         setIsModalOpen(true);
     };
 
@@ -27,7 +26,7 @@ function ArticlesList({ articles, authorStats} ) {
                         key={index}
                         title={article.title}
                         year={article.created_date}
-                        authors={["John Doe", "Jane Smith", "Alice Brown"]} // Ajuste conforme necessário
+                        authors={article.authorships.map(authorship => authorship.author.display_name)}
                         citations={article.cited_by_count}
                         onClick={() => openModal(article)}
                     />

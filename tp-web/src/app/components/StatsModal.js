@@ -1,8 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-const StatsModal = ({ isOpen, onRequestClose, author}) => {
-    const coAuthor = []
+const StatsModal = ({ isOpen, onRequestClose, author, coAuthor}) => {
   const styles = {
     modal: {
       content: {
@@ -34,8 +33,8 @@ const StatsModal = ({ isOpen, onRequestClose, author}) => {
       <div style={styles.modal.rect}>
         <h3>Instituições</h3>
         <ul>
-          {author?.last_known_institutions?.display_name?.map((inst, index) => (
-            <li key={index}>{inst.display_name}</li>
+          {author?.affiliations?.map((inst) => (
+            <li>{inst.institution.display_name}</li>
           )) || <p>Nenhuma instituição registrada</p>}
         </ul>
       </div>
@@ -50,12 +49,12 @@ const StatsModal = ({ isOpen, onRequestClose, author}) => {
       <div style={styles.modal.rect}>
         <h3>Co-Autores</h3>
         <ul>
-          {coAuthor?.map((co, index) => (
-            <li key={index}>{co.author}</li>
+          {coAuthor?.map(co => (
+            <li>{co}</li>
           )) || <p>Nenhum co-autor encontrado</p>}
         </ul>
       </div>
-      <button style={styles.modal.closeButton} onClick={onRequestClose}>Fechar</button>
+      <button style={styles.modal.closeButton} onClick={onRequestClose}>&times;</button>
     </Modal>
   );
 };
