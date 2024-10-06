@@ -26,23 +26,23 @@ const CitationChart = ({ authorCitations, coAuthorCitations }) => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '50px' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5vh', height: '100%' }}>
       {/* Citações como Co-Autor */}
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
         <p>Total Citações como Co-Autor</p>
-        <div style={{ borderRadius: '50%', border: '2px solid #000', width: '70px', height: '70px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#69aaf5'}}>
+        <div style={{ borderRadius: '50%', border: '2px solid #000', width: '30%', height: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#69aaf5'}}>
           <h2>{coAuthorCitations}</h2>
         </div>
       </div>
 
-      <div style={{ width: '150px', height: '150px' }}> {/* Define o tamanho do gráfico */}
+      <div style={{ width: '15vh', height: '20vh' }}> {/* Define o tamanho do gráfico */}
         <Doughnut data={data} options={options} />
       </div>
 
       {/* Citações como Autor */}
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
         <p>Total Citações como Autor</p>
-        <div style={{ borderRadius: '50%', border: '2px solid #000', width: '70px', height: '70px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#69aaf5' }}>
+        <div style={{ borderRadius: '50%', border: '2px solid #000', width: '30%', height: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#69aaf5' }}>
           <h2>{authorCitations}</h2>
         </div>
       </div>

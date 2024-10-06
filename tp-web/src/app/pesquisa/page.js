@@ -190,7 +190,6 @@ function Pesquisa() {
           <div>
             <h1>Dados do Autor</h1>
             <div style={styles.stats}>
-              <div style={styles.totalWorks}>
                 <div style={styles.row}>
                   <h2>Total de trabalhos</h2>
                   <div style={styles.circle}>
@@ -204,7 +203,6 @@ function Pesquisa() {
                       <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
                     </div>
                   </div>
-                </div>
               </div>
               <div style={styles.row}>
                 <CitationChart authorCitations={authorStats.firstAuthorWorks} coAuthorCitations={authorStats.coAuthorWorks} />
@@ -310,8 +308,8 @@ const styles = {
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
     borderRadius: '10px',
-    minHeight: '60vh',
-    height: '60vh',
+    minHeight: '57vh',
+    height: '57vh',
     width: '80vh',
     display: 'flex',
     flexDirection: 'column',
@@ -323,8 +321,8 @@ const styles = {
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
     borderRadius: '10px',
-    minHeight: '60vh',
-    height: '60vh',
+    minHeight: '57vh',
+    height: '57vh',
     width: '90vh',
     display: 'flex',
     flexDirection: 'column',
@@ -378,7 +376,7 @@ const styles = {
     display: 'flexbox',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '100%',
+    height: '70%',
   },
   filterField: {
     display: 'flex',
@@ -386,21 +384,21 @@ const styles = {
     alignItems: 'center',
     flexDirection: 'column',
     width: '100%',
+    height: '70%',
   },
   outputField: {
     width: '90%',
     margin: '2px',
-    padding: '10px',
     backgroundColor: 'var(--background-color)',
-    borderRadius: '5px',
-    fontSize: '1.2rem',
+    fontSize: '1rem',
   },
   buttonFilter: {
-    margin: '5px',
+    margin: '1px',
     backgroundColor: '#69aaf5',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
+    fontSize: '0.8rem'
   },
 };
 

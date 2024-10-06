@@ -39,7 +39,6 @@ body {
 
 h1 {
   font-size: 36px;
-  margin-bottom: 20px;
   font-weight: bold;
   color: var(--primary-text-color);
   text-align: center; /* Centraliza o texto do título */
