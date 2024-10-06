@@ -4,7 +4,7 @@ import { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { FaHouseChimney } from "react-icons/fa6";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faTags, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faTags, faUsers, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
 import ArticlesList from '../components/ArticlesList';
@@ -15,6 +15,7 @@ function Pesquisa() {
   const router = new useRouter();
   const [author, setAuthor] = useState(null);
   const [authorshipList, setAuthorshipList] = useState([]);
+  const [searchHistory, setSearchHistory] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [id, setId] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -28,12 +29,16 @@ function Pesquisa() {
     // Recuperar informações do sessionStorage
     const storedAuthorData = sessionStorage.getItem('authorDetails');
     const storedAuthorshipData = sessionStorage.getItem('authorshipListDetails');
-    
+    const searchHistory = sessionStorage.getItem("searchHistory");
+
     if (storedAuthorData) {
       setAuthor(JSON.parse(storedAuthorData));
     }
     if(storedAuthorshipData){
       setAuthorshipList(JSON.parse(storedAuthorshipData));
+    }
+    if(searchHistory){
+      setSearchHistory(JSON.parse(searchHistory));
     }
   }, []);
 
@@ -99,41 +104,57 @@ function Pesquisa() {
     }
 
     setAuthorStats({
-        totalWorks,
-        firstAuthorWorks,
-        coAuthorWorks
+      totalWorks,
+      firstAuthorWorks,
+      coAuthorWorks
     });
   };
 
+  function getLastSearch() {
+    // Verifica se há pesquisas no histórico
+    console.log(searchHistory);
+    if (searchHistory.length > 0) {
+        const obj = searchHistory[searchHistory.length - 2];
+        console.log("olaa", obj.author)
+        setAuthor(obj.author);
+        setAuthorshipList(obj.authorship.results);
+    } else {
+        return null; // Nenhuma pesquisa encontrada
+    }
+  }
   const handleSearchChange = (e) => {
-      const query = e.target.value;
-      setSearchQuery(query);
+    const query = e.target.value;
+    setSearchQuery(query);
 
-      if(query.length > 0) {
-          fetchSuggestedAuthors(query).then(res => setSuggestions(res));
-      }
-      else {
-          setSuggestions([]);
-      }
+    if(query.length > 0) {
+        fetchSuggestedAuthors(query).then(res => setSuggestions(res));
+    }
+    else {
+        setSuggestions([]);
+    }
   };
 
   async function handleSearch (e) {
-      e.preventDefault();
-      setSuggestions([]);
-      sessionStorage.clear();
+    e.preventDefault();
+    setSuggestions([]);
+    sessionStorage.clear();
 
-      const authorObj = await fetchAuthorFromOpenAlex(id.split('/').pop())
-      const authorshipList = await fetchAuthorshipFromOpenAlex(id.split('/').pop())
+    const authorObj = await fetchAuthorFromOpenAlex(id.split('/').pop())
+    const authorshipList = await fetchAuthorshipFromOpenAlex(id.split('/').pop())
 
-  
-      setAuthor(authorObj);
-      setAuthorshipList(authorshipList.results);
+    let searchHistoryStorage = searchHistory;
+    searchHistoryStorage.push({author: authorObj, authorship: authorshipList});
+    console.log("olhaa aqui", searchHistoryStorage)
+
+    setSearchHistory(searchHistoryStorage);
+    setAuthor(authorObj);
+    setAuthorshipList(authorshipList.results);
   };
 
   const handleSuggestionClick = (suggestion) => {
-      setSearchQuery(suggestion.name);
-      setId(suggestion.id);
-      setSuggestions([]);
+    setSearchQuery(suggestion.name);
+    setId(suggestion.id);
+    setSuggestions([]);
   };
 
   return (
@@ -177,6 +198,9 @@ function Pesquisa() {
           <h1>Mostrando dados atualmente de</h1>
           <div className={styles.nameAuthor}>
               <p>{author? author.display_name : 'Carregando...'}</p>
+              <div onClick={getLastSearch}>
+                <FontAwesomeIcon icon={faChevronLeft}/>
+              </div>
           </div>
         </div>
 
@@ -199,8 +223,8 @@ function Pesquisa() {
                 <div className={styles.test}>
                   <div className={styles.rectangle}>
                     <div className={styles.filterField}>
-                      <output className={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
-                      <output className={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
+                      <output className={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions.length > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
+                      <output className={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.length > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
                       <output className={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
                       <button className={styles.buttonFilter}>Ver e Filtrar Todos</button>
                     </div>

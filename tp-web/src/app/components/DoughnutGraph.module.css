@@ -2,30 +2,54 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5vh;
-    height: 100% ;
+    gap: 2vh; 
+    height: auto; 
+    padding: 10px; 
 }
+
 .citacoes { 
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center; 
     align-items: center;
-    height: 100%;
+    height: auto;
 }
+
 .circle {
     border-radius: 50%;
     border: 2px solid #000;
-    width: 35%;
-    height: 40%;
+    width: 50%; 
+    height: 7vh; 
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #69aaf5;
+    max-width: 150px; 
+    max-height: 150px; 
 }
+
 .graph { 
-    width: 15vw;
-    height: 20vh;
+    width: 60%; 
+    height: auto; 
+    max-height:150px; 
     display: flex;
     justify-content: center; 
+}
+
+/* Consulta de mídia para telas menores */
+@media (max-width: 600px) {
+    .graphContainer {
+        gap: 10px; 
+    }
+
+    .circle {
+        width: 60%;
+        height: 60%; 
+    }
+
+    .graph {
+        width: 90%;
+        max-height: 200px; 
+    }
 }

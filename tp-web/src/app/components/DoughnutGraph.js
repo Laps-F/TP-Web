@@ -8,7 +8,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const CitationChart = ({ authorCitations, coAuthorCitations }) => {
   const data = {
-    labels: ['Citações como Autor', 'Citações como Co-Autor'],
+    labels: ['Autor', 'Co-Autor'],
     datasets: [
       {
         data: [authorCitations, coAuthorCitations],
