@@ -45,7 +45,7 @@ const Modal = ({ isOpen, onClose, article, authorStats}) => {
         
                     <div className={styles.citation}>
                         <p>Citado por&nbsp;</p>
-                        <div className={styles.circle}>{authorStats.totalWorks}</div>
+                        <div className={styles.circle}>{article.cited_by_count}</div>
                     </div>
                 </div>
             </div>

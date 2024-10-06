@@ -63,7 +63,6 @@ function Pesquisa() {
           });
           });
           coAuthor = Array.from(coAuthorsSet);
-          // console.log(coAuthor);
       }
       return coAuthor;
   }

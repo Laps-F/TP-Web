@@ -31,7 +31,7 @@ export async function fetchAuthorFromOpenAlex(query) {
 }
 
 export async function fetchAuthorshipFromOpenAlex(id){
-    const apiURL = `https://api.openalex.org/works?filter=authorships.author.id:${id}&per-page=5`;
+    const apiURL = `https://api.openalex.org/works?filter=authorships.author.id:${id}&per-page=200`;
 
     try {
         const response = await fetch(apiURL);
