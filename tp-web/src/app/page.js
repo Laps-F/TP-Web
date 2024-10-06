@@ -34,7 +34,10 @@ function Home() {
 
     console.log(authorshipList);
     console.log(authorObj)
+    let searchHistory = [];
+    searchHistory.push({author: authorObj, authorship: authorshipList});
 
+    sessionStorage.setItem("searchHistory", JSON.stringify(searchHistory));
     sessionStorage.setItem('authorDetails', JSON.stringify(authorObj));
     sessionStorage.setItem('authorshipListDetails', JSON.stringify(authorshipList.results));
 
@@ -54,11 +57,12 @@ function Home() {
       <form className={styles.searchContainer} onSubmit={handleSearch}>
         <input 
           type="text" 
+          className={styles.searchInput}
           placeholder="Digite sua pesquisa..." 
           value={searchQuery}
           onChange={handleSearchChange}
         />
-        <button type="submit">Pesquisar</button>
+        <button className={styles.searchButton} type="submit">Pesquisar</button>
 
         {suggestions.length > 0 && (
           <ul className={styles.suggestionsList}>

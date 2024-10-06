@@ -12,6 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; 
 }
 .searchContainer {
     display: flex;
@@ -41,6 +42,7 @@
     display: flex;
     align-items: center;
     width: 10vw;
+    justify-content: center; 
 }
 .title {
     font-size: 2rem;
@@ -61,18 +63,18 @@
     height: 5vh;
     border-radius: 10px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     color: var(--primary-text-color);
     background-color: white;
     border: 1px solid var(--border-color);
     margin-bottom: 6vh;
-    padding-left: 3vw;
-    font-size: 20px;
+    padding: 1vh 3vw;
+    font-size: 1rem;
 }
 .contentContainer {
     width: 100%;
-    height: 50%;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -136,16 +138,6 @@
     justify-content: center;
     align-items: center;
 }
-.circleMinus {
-    width: 100%;
-    height: 40%;
-    border-radius: 50%;
-    background-color: #add8e6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 10px;
-}
 .rectangle {
     display: flex;
     justify-content: center;
@@ -158,7 +150,7 @@
     margin-left: 1vw;
 }
 .filterContainer {
-    display: flexbox;
+    display: flex;
     align-items: center;
     justify-content: center;
     height: 70%;
@@ -175,6 +167,8 @@
     width: 90%;
     height: 20%;
     margin: 2px;
+    border: 1px solid black;
+    border-radius: 4px;
     background-color: var(--background-color);
     font-size: 0.7rem;
     display: flex;
@@ -212,5 +206,44 @@
     }
     .outputField {
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .appName {
+        margin-bottom: 10px;
+        width: 100%; /* Centraliza o título em telas menores */
+    }
+
+    .searchContainer {
+        width: 100%; /* Ajusta o tamanho da barra de busca para 100% */
+    }
+
+    .nameAuthorContainer {
+        width: 90vw;
+    }
+
+    .nameAuthor {
+        font-size: 0.9rem;
+    }
+
+    .content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .articles, .stats {
+        width: 90vw; /* Ajusta a largura dos contêineres */
+        height: auto;
+    }
+
+    .circle {
+        width: 50vw;
+        height: 50vw;
     }
 }
