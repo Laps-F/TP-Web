@@ -9,6 +9,7 @@ import { faBuilding, faTags, faUsers } from '@fortawesome/free-solid-svg-icons';
 import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
 import ArticlesList from '../components/ArticlesList';
 import CitationChart from '../components/DoughnutGraph';
+import styles2 from './page.module.css';
 
 function Pesquisa() {
   const router = new useRouter();
@@ -171,7 +172,7 @@ function Pesquisa() {
         </div>
       </header>
 
-      <div style={styles.contentContainer}>
+      <div className={styles2.contentContainer}>
         <div style={styles.nameAuthorContainer}>
           <h1>Mostrando dados atualmente de</h1>
           <div style={styles.nameAuthor}>
@@ -190,19 +191,19 @@ function Pesquisa() {
           <div>
             <h1>Dados do Autor</h1>
             <div style={styles.stats}>
-                <div style={styles.row}>
-                  <h2>Total de trabalhos</h2>
-                  <div style={styles.circle}>
-                      <h2>{authorStats.totalWorks}</h2>
+              <div style={styles.row}>
+                <h2>Total de trabalhos</h2>
+                <div style={styles.circle}>
+                    <h2>{authorStats.totalWorks}</h2>
+                </div>
+                <div style={styles.rectangle}>
+                  <div style={styles.filterField}>
+                    <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
+                    <output style={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
+                    <output style={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
+                    <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
                   </div>
-                  <div style={styles.rectangle}>
-                    <div style={styles.filterField}>
-                      <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
-                      <output style={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
-                      <output style={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
-                      <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
-                    </div>
-                  </div>
+                </div>
               </div>
               <div style={styles.row}>
                 <CitationChart authorCitations={authorStats.firstAuthorWorks} coAuthorCitations={authorStats.coAuthorWorks} />
@@ -219,8 +220,8 @@ export default Pesquisa;
   
 const styles = {
   container: {
-    minHeight: '100vh',
     backgroundColor: 'var(--primary-gray)',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -292,15 +293,19 @@ const styles = {
   },
   contentContainer: {
     width: '100%',
+    height: '50%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
+  
   content: {
     width: '100%',
+    height: '100%',
     display: 'flex',
     justifyContent: 'space-around',
+    alignItems: 'space-evenly',
   },
   articles: {
     display: 'flex',
@@ -308,8 +313,7 @@ const styles = {
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
     borderRadius: '10px',
-    minHeight: '57vh',
-    height: '57vh',
+    height: '100%',
     width: '80vh',
     display: 'flex',
     flexDirection: 'column',
@@ -321,8 +325,7 @@ const styles = {
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
     borderRadius: '10px',
-    minHeight: '57vh',
-    height: '57vh',
+    height: '100%',
     width: '90vh',
     display: 'flex',
     flexDirection: 'column',
@@ -338,7 +341,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: '100%',
+    height: '50%',
     padding: '20px',
   },
   circle: {
