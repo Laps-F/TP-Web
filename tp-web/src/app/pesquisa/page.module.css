@@ -111,20 +111,24 @@
     align-items: stretch;
 }
 .totalWorks {
+    width: 50%;
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     height: 100%;
 }
 .row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     width: 100%;
     height: 50%;
     padding: 20px;
 }
 .circle {
-    width: 200px;
-    height: 200px;
+    width: 40%;
+    height: 85%;
     border-radius: 50%;
     border: 3px solid black;
     background-color: #69aaf5;
@@ -133,8 +137,8 @@
     align-items: center;
 }
 .circleMinus {
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    height: 40%;
     border-radius: 50%;
     background-color: #add8e6;
     display: flex;
@@ -146,8 +150,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 90%;
+    width: 80%;
+    height: 100%;
     background-color: var(--primary-color);
     border: 1px solid black;
     border-radius: 5px;
@@ -161,17 +165,20 @@
 }
 .filterField {
     display: flex;
-    flex-direction: row;
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 70%;
+    height: 100%;
+    justify-content: space-around;
 }
 .outputField {
     width: 90%;
+    height: 20%;
     margin: 2px;
     background-color: var(--background-color);
-    font-size: 1rem;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
 }
 .buttonFilter {
     margin: 1px;
@@ -179,7 +186,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 0.8rem
+    font-size: 0.7rem
 }
 .contentContainer {
     width: 100%;
@@ -190,9 +197,20 @@
     align-items: center;
 }
 
+.test {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
 /* Quando o tamanho da tela for maior; ajuste a altura para 70% */
 @media (min-height: 900px) {
     .contentContainer {
         height: 60%;
+    }
+    .outputField {
+        font-size: 1rem;
     }
 }
