@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './ArticleCard.module.css';
 
-const ArticleCard = ({ title, year, authors, citations }) => {
+const ArticleCard = ({ title, year, authors, citations, onClick}) => {
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={onClick}>
       <div className={styles.info}>
         <h2>{title}</h2>
         <p className={styles.year}>{year} ; {authors.join(', ')}</p>

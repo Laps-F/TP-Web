@@ -3,120 +3,138 @@
 import { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { FaHouseChimney } from "react-icons/fa6";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBuilding, faTags, faUsers } from '@fortawesome/free-solid-svg-icons';
 
-import fetchSuggestedAuthors from '@/back/data';
+import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
 import ArticlesList from '../components/ArticlesList';
+import CitationChart from '../components/DoughnutGraph';
 
 function Pesquisa() {
-    const router = new useRouter();
-    const [author, setAuthor] = useState(null);
-    const [articlesList, setArticlesList] = useState([]);
-    const [authorshipList, setAuthorshipList] = useState([]);
-    const [workList, setWorkList] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [suggestions, setSuggestions] = useState([]);
-    const [authorStats, setAuthorStats] = useState({
-      totalWorks: 0,
-      firstAuthorWorks: 0,
-      coAuthorWorks: 0,
+  const router = new useRouter();
+  const [author, setAuthor] = useState(null);
+  const [authorshipList, setAuthorshipList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [id, setId] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [authorStats, setAuthorStats] = useState({
+    totalWorks: 0,
+    firstAuthorWorks: 0,
+    coAuthorWorks: 0,
   });
 
-    useEffect(() => {
-      // Recuperar informações do sessionStorage
-      const storedAuthorData = sessionStorage.getItem('authorDetails');
-      const storedArticlesListData = sessionStorage.getItem('articlesListDetails');
-      const storedAuthorshipData = sessionStorage.getItem('authorshipListDetails');
-      const storedAllWorks = sessionStorage.getItem('workListDetails');
-      // console.log(storedAuthorData);
-      //console.log(storedArticlesListData);
-      if (storedAuthorData) {
-        setAuthor(JSON.parse(storedAuthorData));
-      }
-      if(storedArticlesListData) {
-        setArticlesList(JSON.parse(storedArticlesListData));
-      }
-      if(storedAllWorks) {
-        setWorkList(JSON.parse(storedAllWorks));
-      }
-      if(storedAuthorshipData){
-        setAuthorshipList(JSON.parse(storedAuthorshipData));
-      }
+  useEffect(() => {
+    // Recuperar informações do sessionStorage
+    const storedAuthorData = sessionStorage.getItem('authorDetails');
+    const storedAuthorshipData = sessionStorage.getItem('authorshipListDetails');
+    
+    if (storedAuthorData) {
+      setAuthor(JSON.parse(storedAuthorData));
+    }
+    if(storedAuthorshipData){
+      setAuthorshipList(JSON.parse(storedAuthorshipData));
+    }
+  }, []);
 
-      // calculateAuthorStats(articlesList);
-    }, []);
+  useEffect(() => {
+    calculateAuthorStats(authorshipList);
+  }, [authorshipList]);
 
-    useEffect(() => {
-      calculateAuthorStats(authorshipList);
-    }, [authorshipList]);
+  function findSecondMostFrequentAuthor(articles) {
+    const authorFrequency = {};
 
-    const calculateAuthorStats = (articles) => {
-      console.log('articles: ', articles);
-      let totalWorks = 0;
-      let firstAuthorWorks = 0;
-      let coAuthorWorks = 0;
+    // Itera sobre cada artigo
+    articles.forEach(article => {
+        // Itera sobre a lista de authorships de cada artigo
+        article.authorships.forEach(authorship => {
+            const authorName = authorship.author.display_name;
 
-      // articles.forEach(article => {
-      //     const { authorships } = article;
-      //     console.log('authorships: ', authorships);
-      //     const isFirstAuthor = authorships.some(authorship => authorship.author_position === 'first');
-      //     const isCoAuthor = authorships.some(authorship => authorship.author_position !== 'first');
+            // Incrementa a contagem do autor
+            if (authorFrequency[authorName]) {
+                authorFrequency[authorName]++;
+            } else {
+                authorFrequency[authorName] = 1;
+            }
+        });
+    });
 
-      //     if (isFirstAuthor) firstAuthorWorks++;
-      //     if (isCoAuthor) coAuthorWorks++;
-      //     totalWorks++;
-      // });
-      for (let i = 0; i < articles.length; i++) {
-        let authorList = articles[i].authorships
-        if (authorList.some(a => a.author.id === author.id && a.author_position === 'first')){
-          console.log('oi')
-          firstAuthorWorks++;
+    let maxCount = 0;
+    let secondMaxCount = 0;
+    let secondMostFrequentAuthor = null;
+
+    // Percorre as entradas do objeto de frequências
+    for (const [author, count] of Object.entries(authorFrequency)) {
+        if (count > maxCount) {
+            // Atualiza o segundo mais frequente antes de atualizar o mais frequente
+            secondMaxCount = maxCount;
+            secondMostFrequentAuthor = author;
+
+            // Atualiza o mais frequente
+            maxCount = count;
+        } else if (count > secondMaxCount) {
+            // Atualiza o segundo mais frequente
+            secondMaxCount = count;
+            secondMostFrequentAuthor = author;
         }
-        else if (authorList.some(a => a.author.id === author.id && a.author_position !== 'first'))
-          coAuthorWorks++;
-        totalWorks++;
-      }
+    }
 
-      setAuthorStats({
-          totalWorks,
-          firstAuthorWorks,
-          coAuthorWorks
-      });
-      console.log('total works: ' + totalWorks)
+    return { author: secondMostFrequentAuthor, count: secondMaxCount };
+  }
+  const coAutor = findSecondMostFrequentAuthor(authorshipList);
+
+  const calculateAuthorStats = (articles) => {
+    let totalWorks = 0;
+    let firstAuthorWorks = 0;
+    let coAuthorWorks = 0;
+
+    for (let i = 0; i < articles.length; i++) {
+      let authorList = articles[i].authorships
+      if (authorList.some(a => a.author.id === author.id && a.author_position === 'first')){
+        firstAuthorWorks++;
+      }
+      else if (authorList.some(a => a.author.id === author.id && a.author_position !== 'first'))
+        coAuthorWorks++;
+      totalWorks++;
+    }
+
+    setAuthorStats({
+        totalWorks,
+        firstAuthorWorks,
+        coAuthorWorks
+    });
   };
 
-    // const [a, setA] = useState([]);
-    // useEffect(() => {
-    //   generateListArticles(articlesList);
-    // }, [articlesList]);
+  const handleSearchChange = (e) => {
+      const query = e.target.value;
+      setSearchQuery(query);
 
-    // const generateListArticles = (articles) => {
-    //   setA(articles)
-    // }
+      if(query.length > 0) {
+          fetchSuggestedAuthors(query).then(res => setSuggestions(res));
+      }
+      else {
+          setSuggestions([]);
+      }
+  };
 
+  async function handleSearch (e) {
+      e.preventDefault();
+      setSuggestions([]);
+      sessionStorage.clear();
 
-    const handleSearchChange = (e) => {
-        const query = e.target.value;
-        setSearchQuery(query);
-    
-        if(query.length > 0) {
-            fetchSuggestedAuthors(query).then(res => setSuggestions(res));
-        }
-        else {
-            setSuggestions([]);
-        }
-    };
+      const authorObj = await fetchAuthorFromOpenAlex(id.split('/').pop())
+      const authorshipList = await fetchAuthorshipFromOpenAlex(id.split('/').pop())
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        // alert(`Você pesquisou por: ${searchQuery}`);
-        setSuggestions([]);
-        router.push('/pesquisa')
-    };
+  
+      setAuthor(authorObj);
+      setAuthorshipList(authorshipList.results);
+  };
 
-    const handleSuggestionClick = (suggestion) => {
-        setSearchQuery(suggestion);
-        setSuggestions([]);
-    };
+  const handleSuggestionClick = (suggestion) => {
+      setSearchQuery(suggestion.name);
+      setId(suggestion.id);
+      setSuggestions([]);
+  };
+
   return (
     <div style={styles.container}>
       <header style={styles.header}>
@@ -128,7 +146,7 @@ function Pesquisa() {
             <input 
                 type="text" 
                 placeholder="Digite sua pesquisa..." 
-                value={searchQuery.name}
+                value={searchQuery}
                 onChange={handleSearchChange}
             />
             <button type="submit">Pesquisar</button>
@@ -141,7 +159,7 @@ function Pesquisa() {
                     onClick={() => handleSuggestionClick(suggestion)}
                     style={styles.suggestionItem}
                 >
-                    {suggestion? suggestion.name : ''}
+                    {suggestion.name}
                 </li>
                 ))}
             </ul>
@@ -154,44 +172,45 @@ function Pesquisa() {
       </header>
 
       <div style={styles.contentContainer}>
-        <p>Mostrando dados atualmente de:</p>
-
-        <div style={styles.nameAuthor}>
-            {author? author.display_name : 'Carregando...'}
+        <div style={styles.nameAuthorContainer}>
+          <h1>Mostrando dados atualmente de</h1>
+          <div style={styles.nameAuthor}>
+              <p>{author? author.display_name : 'Carregando...'}</p>
+          </div>
         </div>
 
         <div style={styles.content}>
+          <div>
+            <h1>Artigos</h1>
             <div style={styles.articles}>
-                <ArticlesList articles={articlesList}/>
+                <ArticlesList articles={authorshipList} authorStats={authorStats}/>
             </div>
-    
+          </div>
+          
+          <div>
+            <h1>Dados do Autor</h1>
             <div style={styles.stats}>
-
+              <div style={styles.totalWorks}>
                 <div style={styles.row}>
-                  <p>Total de trabalhos:</p>
-                  <div style={styles.circle}>{authorStats.totalWorks}</div>
-
-                    <div style={styles.rectangle}>
-                      <div style={styles.filterField}>
-                        <output style={styles.outputField}>Instituição</output>
-                        <output style={styles.outputField}>Co-Author</output>
-                        <output style={styles.outputField}>Tópico</output>
-                        <button style={styles.buttonFilter}>Filtrar</button>
-                      </div>
+                  <h2>Total de trabalhos</h2>
+                  <div style={styles.circle}>
+                      <h2>{authorStats.totalWorks}</h2>
+                  </div>
+                  <div style={styles.rectangle}>
+                    <div style={styles.filterField}>
+                      <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
+                      <output style={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
+                      <output style={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
+                      <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
                     </div>
-
-                
+                  </div>
                 </div>
-
-
-                <div style={styles.row}>
-                  <p>Trabalhos como Autor:</p>
-                  <div style={styles.circleMinus}>{authorStats.firstAuthorWorks}</div>
-
-                  <p>Trabalhos como Co-Autor:</p>
-                  <div style={styles.circleMinus}>{authorStats.coAuthorWorks}</div>
-                </div>         
+              </div>
+              <div style={styles.row}>
+                <CitationChart authorCitations={authorStats.firstAuthorWorks} coAuthorCitations={authorStats.coAuthorWorks} />
+              </div>         
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -199,100 +218,6 @@ function Pesquisa() {
 }
   
 export default Pesquisa;
-
-// const styles = {
-//   container: {
-//     minHeight: '100vh',
-//     backgroundColor: 'var(--primary-gray)', // Fundo cinza
-//     display: 'flex',
-//     flexDirection: 'column',
-//   },
-//   header: {
-//     width: '100vw', // Cobre toda a largura da tela
-//     padding: '20px',
-//     backgroundImage: 'linear-gradient(to right, #2364f0, #69aaf5, #add8e6)', // Fading de roxo azulado para azul claro
-//     color: 'var(--secondary-text-color)',
-//     display: 'flex',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//     boxSizing: 'border-box', // Evita que padding afete o width
-//   },
-//   searchContainer: {
-//     display: 'flex',
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     position: 'relative', // Necessário para o posicionamento das sugestões
-//     width: '100%',
-//     maxWidth: '500px',
-//   },
-//   suggestionsList: {
-//     position: 'absolute',
-//     top: '110%', // Logo abaixo do campo de pesquisa
-//     left: '0',
-//     width: '100%', // Ocupa o mesmo espaço do input
-//     backgroundColor: 'var(--secondary-text-color)',
-//     border: '1px solid var(--border-color)',
-//     borderRadius: '5px',
-//     zIndex: 1,
-//   },
-//   suggestionItem: {
-//     padding: '10px',
-//     cursor: 'pointer',
-//     borderBottom: '1px solid var(--highlight-color)',
-//     color: 'var(--primary-text-color)',
-//   },
-//   appName: {
-//     display: 'flex',
-//     alignItems: 'center',
-//     width: '10vw',
-//   },
-//   title: {
-//     fontSize: '2rem',
-//     margin: 0,
-//   },
-//   homeButton: {
-//     justifyContent: 'center',
-//     paddingRight: '3vw',
-//   },
-//   nameAuthor: {
-//     width: '100%', // Garante que o conteúdo também cubra toda a largura
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     color: 'var(--primary-text-color)',
-//     backgroundColor: 'white',
-//     border: '1px solid var(--border-color)',
-//   },
-//   contentContainer: {
-//     flex: 1,
-//     width: '100%', // Garante que o conteúdo também cubra toda a largura
-//     display: 'flex',
-//     flexDirection: 'column',
-//     justifyContent: 'space-evenly',
-//     alignItems: 'center',
-//     color: 'var(--primary-text-color)',
-//   },
-//   content: {
-//     width: '100%', // Garante que o conteúdo também cubra toda a largura
-//     display: 'flex',
-//     justifyContent: 'space-around',
-//     alignItems: 'center',
-//     color: 'var(--primary-text-color)',
-    
-//   },
-//   articles: {
-//     backgroundColor: 'white',
-//     border: '1px solid var(--border-color)',
-//     justifyContent: 'center',
-//     minHeight: '60vh',
-//   },
-//   stats: {
-//     backgroundColor: 'white',
-//     border: '1px solid var(--border-color)',
-//     justifyContent: 'center',
-//     minHeight: '60vh',
-
-//   },
   
 const styles = {
   container: {
@@ -347,17 +272,27 @@ const styles = {
     justifyContent: 'center',
     paddingRight: '3vw',
   },
+  nameAuthorContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '60vw',
+    margin: '1vh',
+  },
   nameAuthor: {
     width: '100%',
+    height: '5vh',
+    borderRadius: '10px',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     color: 'var(--primary-text-color)',
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
+    marginBottom: '6vh',
+    paddingLeft: '3vw',
+    fontSize: '20px',
   },
   contentContainer: {
-    flex: 1,
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
@@ -368,44 +303,51 @@ const styles = {
     width: '100%',
     display: 'flex',
     justifyContent: 'space-around',
-    alignItems: 'center',
   },
   articles: {
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
+    borderRadius: '10px',
     minHeight: '60vh',
-    height: '70vh',
+    height: '60vh',
     width: '80vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
     overflowX: 'auto',
+    padding: '5px',
   },
   stats: {
     backgroundColor: 'white',
     border: '1px solid var(--border-color)',
+    borderRadius: '10px',
     minHeight: '60vh',
-    height: '70vh',
-    width: '80vh',
+    height: '60vh',
+    width: '90vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
+  },
+  totalWorks: {
+    display: 'flex',
+    height: '100%',
   },
   row: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: '90%',
+    justifyContent: 'center',
+    width: '100%',
     height: '100%',
-    margin: '1vh',
+    padding: '20px',
   },
   circle: {
-    width: '50px',
-    height: '50px',
+    width: '200px',
+    height: '200px',
     borderRadius: '50%',
+    border: '3px solid black',
     backgroundColor: '#69aaf5',
     display: 'flex',
     justifyContent: 'center',
@@ -425,10 +367,12 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '80%',
-    height: '80%',
-    backgroundColor: '#2364f0',
-  
+    width: '50%',
+    height: '90%',
+    backgroundColor: 'var(--primary-color)',
+    border: '1px solid black',
+    borderRadius: '5px',
+    marginLeft: '1vw',
   },
   filterContainer: {
     display: 'flexbox',
@@ -441,14 +385,18 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     flexDirection: 'column',
+    width: '100%',
   },
   outputField: {
-    color: 'white',
-    fontSize: '1rem',
-    paddingRight: '20px',
+    width: '90%',
+    margin: '2px',
+    padding: '10px',
+    backgroundColor: 'var(--background-color)',
+    borderRadius: '5px',
+    fontSize: '1.2rem',
   },
   buttonFilter: {
-    padding: '10px 20px',
+    margin: '5px',
     backgroundColor: '#69aaf5',
     border: 'none',
     borderRadius: '5px',
