@@ -4,6 +4,7 @@ import { useState} from 'react';
 import { useRouter } from 'next/navigation';
 
 import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
+import styles from './page.module.css';
 import Decom from './assets/decom_logo.svg';
 import Ufop from './assets/ufop_logo.png';
 
@@ -47,10 +48,10 @@ function Home() {
   };
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Buscador Científico</h1>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Buscador Científico</h1>
 
-      <form style={styles.searchContainer} onSubmit={handleSearch}>
+      <form className={styles.searchContainer} onSubmit={handleSearch}>
         <input 
           type="text" 
           placeholder="Digite sua pesquisa..." 
@@ -60,12 +61,12 @@ function Home() {
         <button type="submit">Pesquisar</button>
 
         {suggestions.length > 0 && (
-          <ul style={styles.suggestionsList}>
+          <ul className={styles.suggestionsList}>
             {suggestions.map((suggestion, index) => (
               <li 
                 key={index} 
                 onClick={() => handleSuggestionClick(suggestion)}
-                style={styles.suggestionItem}
+                className={styles.suggestionItem}
               >
                 {suggestion.name}
               </li>
@@ -74,7 +75,7 @@ function Home() {
         )}
       </form>
 
-      <div style={styles.sponsorsContainer}>
+      <div className={styles.sponsorsContainer}>
         <img src={Decom.src} alt="Patrocinador 1" />
         <img src={Ufop.src} alt="Patrocinador 2" />
       </div>
@@ -83,47 +84,3 @@ function Home() {
 }
 
 export default Home;
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    minHeight: '100vh', // Para ocupar a tela toda
-    position: 'relative', // Para que os patrocinadores fiquem absolutos no rodapé
-  },
-  searchContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: '220px',
-    position: 'relative', // Necessário para o posicionamento das sugestões
-    width: '100%',
-    maxWidth: '500px',
-  },
-  suggestionsList: {
-    position: 'absolute',
-    top: '110%', // Logo abaixo do campo de pesquisa
-    left: '0',
-    width: '100%', // Ocupa o mesmo espaço do input
-    backgroundColor: 'var(--secondary-text-color)',
-    border: '1px solid var(--border-color)',
-    borderRadius: '5px',
-    zIndex: 1,
-  },
-  suggestionItem: {
-    padding: '10px',
-    cursor: 'pointer',
-    borderBottom: '1px solid var(--highlight-color)',
-  },
-  sponsorsContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '20px',
-    position: 'absolute',
-    bottom: '20px', // Fixa o container no final da página
-    width: '100%',
-    maxWidth: '500px',
-  },
-};

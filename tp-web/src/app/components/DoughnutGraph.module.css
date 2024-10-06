@@ -1,0 +1,31 @@
+.graphContainer { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh;
+    height: 100% ;
+}
+.citacoes { 
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+}
+.circle {
+    border-radius: 50%;
+    border: 2px solid #000;
+    width: 35%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #69aaf5;
+}
+.graph { 
+    width: 15vw;
+    height: 20vh;
+    display: flex;
+    justify-content: center; 
+}

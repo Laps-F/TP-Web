@@ -1,6 +1,9 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+import styles from './DoughnutGraph.module.css';
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const CitationChart = ({ authorCitations, coAuthorCitations }) => {
@@ -26,23 +29,23 @@ const CitationChart = ({ authorCitations, coAuthorCitations }) => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '5vh', height: '100%' }}>
+    <div className={styles.graphContainer}>
       {/* Citações como Co-Autor */}
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
+      <div className={styles.citacoes}>
         <p>Total Citações como Co-Autor</p>
-        <div style={{ borderRadius: '50%', border: '2px solid #000', width: '30%', height: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#69aaf5'}}>
+        <div className={styles.circle}>
           <h2>{coAuthorCitations}</h2>
         </div>
       </div>
 
-      <div style={{ width: '15vh', height: '20vh' }}> {/* Define o tamanho do gráfico */}
+      <div className={styles.graph}> {/* Define o tamanho do gráfico */}
         <Doughnut data={data} options={options} />
       </div>
 
       {/* Citações como Autor */}
-      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
+      <div className={styles.citacoes}>
         <p>Total Citações como Autor</p>
-        <div style={{ borderRadius: '50%', border: '2px solid #000', width: '30%', height: '40%', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#69aaf5' }}>
+        <div className={styles.circle}>
           <h2>{authorCitations}</h2>
         </div>
       </div>

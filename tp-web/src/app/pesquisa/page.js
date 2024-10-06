@@ -10,7 +10,7 @@ import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpen
 import ArticlesList from '../components/ArticlesList';
 import CitationChart from '../components/DoughnutGraph';
 import StatsModal from '../components/StatsModal';
-import styles2 from './page.module.css';
+import styles from './page.module.css';
 
 function Pesquisa() {
   const router = new useRouter();
@@ -143,13 +143,13 @@ function Pesquisa() {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <div style={styles.appName}>
-            <h1 style={styles.title}>Buscador Científico</h1>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.appName}>
+            <h1 className={styles.title}>Buscador Científico</h1>
         </div>
 
-        <form style={styles.searchContainer} onSubmit={handleSearch}>
+        <form className={styles.searchContainer} onSubmit={handleSearch}>
             <input 
                 type="text" 
                 placeholder="Digite sua pesquisa..." 
@@ -159,12 +159,12 @@ function Pesquisa() {
             <button type="submit">Pesquisar</button>
 
             {suggestions.length > 0 && (
-            <ul style={styles.suggestionsList}>
+            <ul className={styles.suggestionsList}>
                 {suggestions.map((suggestion, index) => (
                 <li 
                     key={index} 
                     onClick={() => handleSuggestionClick(suggestion)}
-                    style={styles.suggestionItem}
+                    className={styles.suggestionItem}
                 >
                     {suggestion.name}
                 </li>
@@ -173,44 +173,42 @@ function Pesquisa() {
             )}
         </form>
 
-        <div style={styles.homeButton} onClick={() => router.push('/')}>
+        <div className={styles.homeButton} onClick={() => router.push('/')}>
             <FaHouseChimney color='black' size={42}/>
         </div>
       </header>
 
-      <div className={styles2.contentContainer}>
-        <div style={styles.nameAuthorContainer}>
+      <div className={styles.contentContainer}>
+        <div className={styles.nameAuthorContainer}>
           <h1>Mostrando dados atualmente de</h1>
-          <div style={styles.nameAuthor}>
+          <div className={styles.nameAuthor}>
               <p>{author? author.display_name : 'Carregando...'}</p>
           </div>
         </div>
 
-        <div style={styles.content}>
+        <div className={styles.content}>
           <div>
             <h1>Artigos</h1>
-            <div style={styles.articles}>
+            <div className={styles.articles}>
                 <ArticlesList articles={authorshipList} authorStats={authorStats}/>
             </div>
           </div>
           
           <div>
             <h1>Dados do Autor</h1>
-            <div style={styles.stats}>
-              <div style={styles.row}>
-                <div style={styles.totalWorks}>
-                  <h2>Total de trabalhos</h2>
-                  <div style={styles.circle}>
-                      <h2>{authorStats.totalWorks}</h2>
-                  </div>
+            <div className={styles.stats}>
+              <div className={styles.row}>
+                <h2>Total de trabalhos</h2>
+                <div className={styles.circle}>
+                    <h2>{authorStats.totalWorks}</h2>
                 </div>
-                <div style={styles.otherstats}>
-                  <div style={styles.rectangle}>
-                    <div style={styles.filterField}>
-                      <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions ? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
-                      <output style={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
-                      <output style={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
-                      <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
+                <div className={styles.test}>
+                  <div className={styles.rectangle}>
+                    <div className={styles.filterField}>
+                      <output className={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions ? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
+                      <output className={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
+                      <output className={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
+                      <button className={styles.buttonFilter}>Ver e Filtrar Todos</button>
                       <StatsModal 
                         isOpen={isModalOpen} 
                         onRequestClose={closeModal} 
@@ -220,7 +218,7 @@ function Pesquisa() {
                   </div>
                 </div>
               </div>
-              <div style={styles.row}>
+              <div className={styles.row}>
                 <CitationChart authorCitations={authorStats.firstAuthorWorks} coAuthorCitations={authorStats.coAuthorWorks} />
               </div>         
             </div>
