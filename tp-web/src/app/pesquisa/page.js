@@ -9,6 +9,7 @@ import { faBuilding, faTags, faUsers } from '@fortawesome/free-solid-svg-icons';
 import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
 import ArticlesList from '../components/ArticlesList';
 import CitationChart from '../components/DoughnutGraph';
+import StatsModal from '../components/StatsModal';
 import styles2 from './page.module.css';
 
 function Pesquisa() {
@@ -23,6 +24,10 @@ function Pesquisa() {
     firstAuthorWorks: 0,
     coAuthorWorks: 0,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     // Recuperar informações do sessionStorage
@@ -103,6 +108,7 @@ function Pesquisa() {
         firstAuthorWorks,
         coAuthorWorks
     });
+    console.log('author', author)
   };
 
   const handleSearchChange = (e) => {
@@ -198,13 +204,18 @@ function Pesquisa() {
                       <h2>{authorStats.totalWorks}</h2>
                   </div>
                 </div>
-                <div style={styles.test}>
+                <div style={styles.otherstats}>
                   <div style={styles.rectangle}>
                     <div style={styles.filterField}>
-                      <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
+                      <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions ? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
                       <output style={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
                       <output style={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
                       <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
+                      <StatsModal 
+                        isOpen={isModalOpen} 
+                        onRequestClose={closeModal} 
+                        author={author} 
+                    />
                     </div>
                   </div>
                 </div>
@@ -411,7 +422,7 @@ const styles = {
     cursor: 'pointer',
     fontSize: '0.8rem'
   },
-  test: {
+  otherstats: {
     width: '100%',
     height: '100%',
     display: 'flex',
