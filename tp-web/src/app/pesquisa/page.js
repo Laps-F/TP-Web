@@ -9,6 +9,7 @@ import { faBuilding, faTags, faUsers, faChevronLeft } from '@fortawesome/free-so
 import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
 import ArticlesList from '../components/ArticlesList';
 import CitationChart from '../components/DoughnutGraph';
+import StatsModal from '../components/StatsModal';
 import styles from './page.module.css';
 
 function Pesquisa() {
@@ -24,6 +25,10 @@ function Pesquisa() {
     firstAuthorWorks: 0,
     coAuthorWorks: 0,
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
     // Recuperar informações do sessionStorage
@@ -46,6 +51,26 @@ function Pesquisa() {
     calculateAuthorStats(authorshipList);
   }, [authorshipList]);
 
+
+  function createCoAutorList(articles) {
+    let coAuthor = []
+      if (articles){
+          const coAuthorsSet = new Set();
+  
+          // Percorrendo todos os artigos
+          articles.forEach(article => {
+          // Percorrendo todos os authorships de cada artigo
+          article.authorships.forEach(authorship => {
+              // Se o nome do autor não for o autor principal, adiciona ao Set
+              if (authorship.author.display_name !== author.display_name) {
+              coAuthorsSet.add(authorship.author.display_name);
+              }
+          });
+          });
+          coAuthor = Array.from(coAuthorsSet);
+      }
+      return coAuthor;
+  }
   function findSecondMostFrequentAuthor(articles) {
     const authorFrequency = {};
 
@@ -87,6 +112,8 @@ function Pesquisa() {
     return { author: secondMostFrequentAuthor, count: secondMaxCount };
   }
   const coAutor = findSecondMostFrequentAuthor(authorshipList);
+  const coAutorList = createCoAutorList(authorshipList);
+  console.log('coAuthorList', coAutorList);
 
   const calculateAuthorStats = (articles) => {
     let totalWorks = 0;
@@ -108,6 +135,8 @@ function Pesquisa() {
       firstAuthorWorks,
       coAuthorWorks
     });
+    console.log('author', author)
+    console.log('articles', articles)
   };
 
   function getLastSearch() {
@@ -226,7 +255,13 @@ function Pesquisa() {
                       <output className={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions.length > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
                       <output className={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.length > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
                       <output className={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
-                      <button className={styles.buttonFilter}>Ver e Filtrar Todos</button>
+                      <button className={styles.buttonFilter} onClick={openModal}>Ver e Filtrar Todos</button>
+                      <StatsModal 
+                        isOpen={isModalOpen} 
+                        onRequestClose={closeModal} 
+                        author={author}
+                        coAuthor={coAutorList} 
+                    />
                     </div>
                   </div>
                 </div>
@@ -243,3 +278,5 @@ function Pesquisa() {
 }
   
 export default Pesquisa;
+  
+
