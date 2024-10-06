@@ -9,7 +9,7 @@ import { faBuilding, faTags, faUsers } from '@fortawesome/free-solid-svg-icons';
 import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
 import ArticlesList from '../components/ArticlesList';
 import CitationChart from '../components/DoughnutGraph';
-import styles2 from './page.module.css';
+import styles from './page.module.css';
 
 function Pesquisa() {
   const router = new useRouter();
@@ -137,13 +137,13 @@ function Pesquisa() {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <div style={styles.appName}>
-            <h1 style={styles.title}>Buscador Científico</h1>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.appName}>
+            <h1 className={styles.title}>Buscador Científico</h1>
         </div>
 
-        <form style={styles.searchContainer} onSubmit={handleSearch}>
+        <form className={styles.searchContainer} onSubmit={handleSearch}>
             <input 
                 type="text" 
                 placeholder="Digite sua pesquisa..." 
@@ -153,12 +153,12 @@ function Pesquisa() {
             <button type="submit">Pesquisar</button>
 
             {suggestions.length > 0 && (
-            <ul style={styles.suggestionsList}>
+            <ul className={styles.suggestionsList}>
                 {suggestions.map((suggestion, index) => (
                 <li 
                     key={index} 
                     onClick={() => handleSuggestionClick(suggestion)}
-                    style={styles.suggestionItem}
+                    className={styles.suggestionItem}
                 >
                     {suggestion.name}
                 </li>
@@ -167,45 +167,45 @@ function Pesquisa() {
             )}
         </form>
 
-        <div style={styles.homeButton} onClick={() => router.push('/')}>
+        <div className={styles.homeButton} onClick={() => router.push('/')}>
             <FaHouseChimney color='black' size={42}/>
         </div>
       </header>
 
-      <div className={styles2.contentContainer}>
-        <div style={styles.nameAuthorContainer}>
+      <div className={styles.contentContainer}>
+        <div className={styles.nameAuthorContainer}>
           <h1>Mostrando dados atualmente de</h1>
-          <div style={styles.nameAuthor}>
+          <div className={styles.nameAuthor}>
               <p>{author? author.display_name : 'Carregando...'}</p>
           </div>
         </div>
 
-        <div style={styles.content}>
+        <div className={styles.content}>
           <div>
             <h1>Artigos</h1>
-            <div style={styles.articles}>
+            <div className={styles.articles}>
                 <ArticlesList articles={authorshipList} authorStats={authorStats}/>
             </div>
           </div>
           
           <div>
             <h1>Dados do Autor</h1>
-            <div style={styles.stats}>
-              <div style={styles.row}>
+            <div className={styles.stats}>
+              <div className={styles.row}>
                 <h2>Total de trabalhos</h2>
-                <div style={styles.circle}>
+                <div className={styles.circle}>
                     <h2>{authorStats.totalWorks}</h2>
                 </div>
-                <div style={styles.rectangle}>
-                  <div style={styles.filterField}>
-                    <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
-                    <output style={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
-                    <output style={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
-                    <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
+                <div className={styles.rectangle}>
+                  <div className={styles.filterField}>
+                    <output className={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
+                    <output className={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
+                    <output className={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
+                    <button className={styles.buttonFilter}>Ver e Filtrar Todos</button>
                   </div>
                 </div>
               </div>
-              <div style={styles.row}>
+              <div className={styles.row}>
                 <CitationChart authorCitations={authorStats.firstAuthorWorks} coAuthorCitations={authorStats.coAuthorWorks} />
               </div>         
             </div>
@@ -217,191 +217,3 @@ function Pesquisa() {
 }
   
 export default Pesquisa;
-  
-const styles = {
-  container: {
-    backgroundColor: 'var(--primary-gray)',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  header: {
-    width: '100vw',
-    padding: '20px',
-    backgroundImage: 'linear-gradient(to right, #2364f0, #69aaf5, #add8e6)',
-    color: 'var(--secondary-text-color)',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  searchContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'relative',
-    width: '100%',
-    maxWidth: '500px',
-  },
-  suggestionsList: {
-    position: 'absolute',
-    top: '110%',
-    left: '0',
-    width: '100%',
-    backgroundColor: 'var(--secondary-text-color)',
-    border: '1px solid var(--border-color)',
-    borderRadius: '5px',
-    zIndex: 1,
-  },
-  suggestionItem: {
-    padding: '10px',
-    cursor: 'pointer',
-    borderBottom: '1px solid var(--highlight-color)',
-    color: 'var(--primary-text-color)',
-  },
-  appName: {
-    display: 'flex',
-    alignItems: 'center',
-    width: '10vw',
-  },
-  title: {
-    fontSize: '2rem',
-    margin: 0,
-  },
-  homeButton: {
-    justifyContent: 'center',
-    paddingRight: '3vw',
-  },
-  nameAuthorContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '60vw',
-    margin: '1vh',
-  },
-  nameAuthor: {
-    width: '100%',
-    height: '5vh',
-    borderRadius: '10px',
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    color: 'var(--primary-text-color)',
-    backgroundColor: 'white',
-    border: '1px solid var(--border-color)',
-    marginBottom: '6vh',
-    paddingLeft: '3vw',
-    fontSize: '20px',
-  },
-  contentContainer: {
-    width: '100%',
-    height: '50%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  
-  content: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'space-evenly',
-  },
-  articles: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: 'white',
-    border: '1px solid var(--border-color)',
-    borderRadius: '10px',
-    height: '100%',
-    width: '80vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    overflowX: 'auto',
-    padding: '5px',
-  },
-  stats: {
-    backgroundColor: 'white',
-    border: '1px solid var(--border-color)',
-    borderRadius: '10px',
-    height: '100%',
-    width: '90vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  totalWorks: {
-    display: 'flex',
-    height: '100%',
-  },
-  row: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '50%',
-    padding: '20px',
-  },
-  circle: {
-    width: '200px',
-    height: '200px',
-    borderRadius: '50%',
-    border: '3px solid black',
-    backgroundColor: '#69aaf5',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  circleMinus: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    backgroundColor: '#add8e6',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: '10px',
-  },
-  rectangle: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '50%',
-    height: '90%',
-    backgroundColor: 'var(--primary-color)',
-    border: '1px solid black',
-    borderRadius: '5px',
-    marginLeft: '1vw',
-  },
-  filterContainer: {
-    display: 'flexbox',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '70%',
-  },
-  filterField: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexDirection: 'column',
-    width: '100%',
-    height: '70%',
-  },
-  outputField: {
-    width: '90%',
-    margin: '2px',
-    backgroundColor: 'var(--background-color)',
-    fontSize: '1rem',
-  },
-  buttonFilter: {
-    margin: '1px',
-    backgroundColor: '#69aaf5',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '0.8rem'
-  },
-};
-
