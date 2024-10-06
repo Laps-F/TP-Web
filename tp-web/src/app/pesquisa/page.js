@@ -192,16 +192,20 @@ function Pesquisa() {
             <h1>Dados do Autor</h1>
             <div style={styles.stats}>
               <div style={styles.row}>
-                <h2>Total de trabalhos</h2>
-                <div style={styles.circle}>
-                    <h2>{authorStats.totalWorks}</h2>
+                <div style={styles.totalWorks}>
+                  <h2>Total de trabalhos</h2>
+                  <div style={styles.circle}>
+                      <h2>{authorStats.totalWorks}</h2>
+                  </div>
                 </div>
-                <div style={styles.rectangle}>
-                  <div style={styles.filterField}>
-                    <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
-                    <output style={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
-                    <output style={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
-                    <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
+                <div style={styles.test}>
+                  <div style={styles.rectangle}>
+                    <div style={styles.filterField}>
+                      <output style={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
+                      <output style={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.lenght > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
+                      <output style={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
+                      <button style={styles.buttonFilter}>Ver e Filtrar Todos</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -333,7 +337,11 @@ const styles = {
     alignItems: 'stretch',
   },
   totalWorks: {
+    width: '50%',
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: '100%',
   },
   row: {
@@ -345,8 +353,8 @@ const styles = {
     padding: '20px',
   },
   circle: {
-    width: '200px',
-    height: '200px',
+    width: '100%',
+    height: '85%',
     borderRadius: '50%',
     border: '3px solid black',
     backgroundColor: '#69aaf5',
@@ -368,8 +376,8 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '50%',
-    height: '90%',
+    width: '80%',
+    height: '100%',
     backgroundColor: 'var(--primary-color)',
     border: '1px solid black',
     borderRadius: '5px',
@@ -403,5 +411,12 @@ const styles = {
     cursor: 'pointer',
     fontSize: '0.8rem'
   },
+  test: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  }
 };
 
