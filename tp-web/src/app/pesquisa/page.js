@@ -255,7 +255,7 @@ function Pesquisa() {
                       <output className={styles.outputField}><FontAwesomeIcon icon={faBuilding} />&nbsp;{author && author.last_known_institutions && author.last_known_institutions.length > 0? author.last_known_institutions[0].display_name : 'Nenhuma Instituição Registrada'}</output>
                       <output className={styles.outputField}><FontAwesomeIcon icon={faTags} />&nbsp;{author && author.topics && author.topics.length > 0 ? author.topics[0].display_name : 'Nenhum Tópico Encontrado'}</output>
                       <output className={styles.outputField}><FontAwesomeIcon icon={faUsers} />&nbsp;{coAutor.author? coAutor.author : 'Carregando...'}</output>
-                      <button className={styles.buttonFilter} onClick={openModal}>Ver e Filtrar Todos</button>
+                      <button className={styles.buttonFilter} onClick={openModal}>Ver Todos</button>
                       <StatsModal 
                         isOpen={isModalOpen} 
                         onRequestClose={closeModal} 
