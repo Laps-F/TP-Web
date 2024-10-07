@@ -10,7 +10,6 @@
   --primary-gray: #f0f0f0;
 }
 
-/* Reset básico */
 * {
   margin: 0;
   padding: 0;
@@ -20,7 +19,7 @@
 html, body {
   height: 100%;
   font-family: 'Arial', sans-serif;
-  background: linear-gradient(to bottom, var(--primary-blue) 0%, var(--primary-blue) 20%, var(--primary-gray) 60%);
+  background: linear-gradient(to bottom, var(--primary-color) 0%, var(--primary-color) 20%, var(--primary-gray) 60%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,7 +27,6 @@ html, body {
   color: var(--primary-text-color);
 }
 
-/* Estilos globais */
 body {
   display: flex;
   flex-direction: column;
@@ -38,12 +36,11 @@ body {
 }
 
 h1 {
-  font-size: 48px;
-  margin-bottom: 40px;
+  font-size: 36px;
   font-weight: bold;
   color: var(--primary-text-color);
-  text-align: center; /* Centraliza o texto do título */
-  word-wrap: break-word; /* Garante que o texto vai quebrar corretamente em linhas menores */
+  text-align: center;  
+  word-wrap: break-word;  
 }
 
 input {

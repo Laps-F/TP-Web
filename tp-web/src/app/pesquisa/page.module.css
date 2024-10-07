@@ -1,0 +1,334 @@
+.container {
+    background-color: var(--primary-gray);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    width: 100vw;
+    padding: 20px;
+    background-image: linear-gradient(to right, #2364f0, #69aaf5, #add8e6);
+    color: var(--secondary-text-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; 
+}
+
+.searchContainer {
+    margin-left: -5%;
+    display: flex;
+    position: relative;  
+    width: 100%;
+    max-width: 500px;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 10px 40px 10px 15px;  
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.searchButton {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); 
+    background: none; 
+    border: none; 
+    font-size: 18px;     
+    cursor: pointer;
+    color: #333;     
+    padding: 0; 
+}
+
+.searchButton:focus {
+    outline: none; 
+}
+
+.loadingButton {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: default;
+    padding: 0;
+    color: #333;
+    display: flex;
+    align-items: center;  
+}
+
+.loadingSpinner {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-top: 2px solid #333;
+    border-radius: 50%;
+    width: 18px;  
+    height: 18px;
+    animation: spin 0.6s linear infinite;  
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.suggestionsList {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background-color: var(--secondary-text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    z-index: 1;
+}
+.suggestionItem {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--highlight-color);
+    color: var(--primary-text-color);
+}
+.appName {
+    display: flex;
+    align-items: center;
+    width: 10vw;
+    justify-content: center; 
+}
+.title {
+    font-size: 2rem;
+    margin: 0;
+}
+.homeButton {
+    justify-content: center;
+    padding-right: 3vw;
+    cursor: pointer;
+}
+.nameAuthorContainer {
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    margin: 1vh;
+}
+.nameAuthor {
+    width: 100%;
+    height: 5vh;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-text-color);
+    background-color: white;
+    border: 1px solid var(--border-color);
+    margin-bottom: 6vh;
+    padding: 1vh 3vw;
+    font-size: 1rem;
+}
+
+.lastSearch{
+    cursor: pointer;
+}
+.contentContainer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: space-evenly;
+}
+.articles {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    height: 100%;
+    width: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 5px;
+}
+.stats {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    height: 100%;
+    width: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+.totalWorks {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 50%;
+    padding: 20px;
+}
+.circle {
+    width: 40%;
+    height: 85%;
+    border-radius: 50%;
+    border: 3px solid black;
+    background-color: #69aaf5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.rectangle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 100%;
+    background-color: var(--primary-color);
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-left: 1vw;
+}
+.filterContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70%;
+}
+.filterField {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+}
+.outputField {
+    width: 90%;
+    height: 20%;
+    margin: 2px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: var(--background-color);
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.buttonFilter {
+    margin: 1px;
+    background-color: #69aaf5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.7rem
+}
+
+.buttonFilter:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);  
+}
+
+.contentContainer {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.test {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+@media (min-height: 900px) {
+    .contentContainer {
+        height: 60%;
+    }
+    .outputField {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .appName {
+        margin-bottom: 10px;
+        width: 100%;  
+    }
+
+    .searchContainer {
+        width: 100%; 
+        margin-left: 0;
+    }
+
+    .nameAuthorContainer {
+        width: 90vw;
+    }
+
+    .nameAuthor {
+        font-size: 0.9rem;
+    }
+
+    .contentContainer {
+        height: auto;
+    }
+
+    .content {
+        flex-direction: column;
+        align-items: center;
+        background-color: var(--primary-gray);
+    }
+
+    .articles, .stats {
+        width: 90vw; 
+        height: 50vh;
+    }
+
+    .circle {
+        width: 25vw;
+        height: 15vw;
+    }
+
+    .rectangle {
+        width: 45vw;
+    }
+
+    .outputField {
+        overflow: hidden;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
