@@ -39,7 +39,7 @@ const Modal = ({ isOpen, onClose, article}) => {
         
                 <div className={styles.footer}>
                     <div className={styles.info}>
-                        <p>Publicado em: {article.locations[0].source.display_name}</p>
+                        <p>Publicado em: {article.locations.length > 0 && article.locations[0].source? article.locations[0].source.display_name : 'Não Encontrado'}</p>
                         <p>Ano Publicação: {article.publication_year}</p>
                     </div>
         
