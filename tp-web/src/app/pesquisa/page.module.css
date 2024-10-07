@@ -231,15 +231,19 @@
     .nameAuthor {
         font-size: 0.9rem;
     }
+    .contentContainer {
+        height: auto;
+    }
 
     .content {
         flex-direction: column;
         align-items: center;
+        background-color: var(--primary-gray);
     }
 
     .articles, .stats {
         width: 90vw; /* Ajusta a largura dos contêineres */
-        height: auto;
+        height: 50vh;
     }
 
     .circle {
