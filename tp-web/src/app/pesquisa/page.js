@@ -4,7 +4,7 @@ import { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { FaHouseChimney } from "react-icons/fa6";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBuilding, faTags, faUsers, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faTags, faUsers, faChevronLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
 import ArticlesList from '../components/ArticlesList';
@@ -13,7 +13,8 @@ import StatsModal from '../components/StatsModal';
 import styles from './page.module.css';
 
 function Pesquisa() {
-  const router = new useRouter();
+  const router = new useRouter(); 
+  const [loading, setLoading] = useState(false);
   const [author, setAuthor] = useState(null);
   const [authorshipList, setAuthorshipList] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
@@ -31,19 +32,13 @@ function Pesquisa() {
   const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
-    // Recuperar informações do sessionStorage
-    const storedAuthorData = sessionStorage.getItem('authorDetails');
-    const storedAuthorshipData = sessionStorage.getItem('authorshipListDetails');
     const searchHistory = sessionStorage.getItem("searchHistory");
 
-    if (storedAuthorData) {
-      setAuthor(JSON.parse(storedAuthorData));
-    }
-    if(storedAuthorshipData){
-      setAuthorshipList(JSON.parse(storedAuthorshipData));
-    }
     if(searchHistory){
-      setSearchHistory(JSON.parse(searchHistory));
+      let obj = JSON.parse(searchHistory);
+      setSearchHistory(obj);
+      setAuthor(obj[0].author);
+      setAuthorshipList(obj[0].authorship);
     }
   }, []);
 
@@ -57,11 +52,9 @@ function Pesquisa() {
       if (articles){
           const coAuthorsSet = new Set();
   
-          // Percorrendo todos os artigos
           articles.forEach(article => {
-          // Percorrendo todos os authorships de cada artigo
-          article.authorships.forEach(authorship => {
-              // Se o nome do autor não for o autor principal, adiciona ao Set
+
+            article.authorships.forEach(authorship => {
               if (authorship.author.display_name !== author.display_name) {
               coAuthorsSet.add(authorship.author.display_name);
               }
@@ -74,13 +67,10 @@ function Pesquisa() {
   function findSecondMostFrequentAuthor(articles) {
     const authorFrequency = {};
 
-    // Itera sobre cada artigo
     articles.forEach(article => {
-        // Itera sobre a lista de authorships de cada artigo
         article.authorships.forEach(authorship => {
             const authorName = authorship.author.display_name;
 
-            // Incrementa a contagem do autor
             if (authorFrequency[authorName]) {
                 authorFrequency[authorName]++;
             } else {
@@ -93,17 +83,13 @@ function Pesquisa() {
     let secondMaxCount = 0;
     let secondMostFrequentAuthor = null;
 
-    // Percorre as entradas do objeto de frequências
     for (const [author, count] of Object.entries(authorFrequency)) {
         if (count > maxCount) {
-            // Atualiza o segundo mais frequente antes de atualizar o mais frequente
             secondMaxCount = maxCount;
             secondMostFrequentAuthor = author;
 
-            // Atualiza o mais frequente
             maxCount = count;
         } else if (count > secondMaxCount) {
-            // Atualiza o segundo mais frequente
             secondMaxCount = count;
             secondMostFrequentAuthor = author;
         }
@@ -113,7 +99,6 @@ function Pesquisa() {
   }
   const coAutor = findSecondMostFrequentAuthor(authorshipList);
   const coAutorList = createCoAutorList(authorshipList);
-  console.log('coAuthorList', coAutorList);
 
   const calculateAuthorStats = (articles) => {
     let totalWorks = 0;
@@ -135,20 +120,18 @@ function Pesquisa() {
       firstAuthorWorks,
       coAuthorWorks
     });
-    console.log('author', author)
-    console.log('articles', articles)
   };
 
   function getLastSearch() {
-    // Verifica se há pesquisas no histórico
-    console.log(searchHistory);
-    if (searchHistory.length > 0) {
+    if (searchHistory.length > 1) {
         const obj = searchHistory[searchHistory.length - 2];
-        console.log("olaa", obj.author)
-        setAuthor(obj.author);
-        setAuthorshipList(obj.authorship.results);
+        setSearchHistory(searchHistory => searchHistory.slice(0, -1));
+        if(obj !== null && obj !== undefined) {
+          setAuthor(obj.author);
+          setAuthorshipList(obj.authorship);
+        }
     } else {
-        return null; // Nenhuma pesquisa encontrada
+        return null;
     }
   }
   const handleSearchChange = (e) => {
@@ -165,6 +148,8 @@ function Pesquisa() {
 
   async function handleSearch (e) {
     e.preventDefault();
+    setLoading(true);
+
     setSuggestions([]);
     sessionStorage.clear();
 
@@ -172,12 +157,13 @@ function Pesquisa() {
     const authorshipList = await fetchAuthorshipFromOpenAlex(id.split('/').pop())
 
     let searchHistoryStorage = searchHistory;
-    searchHistoryStorage.push({author: authorObj, authorship: authorshipList});
-    console.log("olhaa aqui", searchHistoryStorage)
+    searchHistoryStorage.push({author: authorObj, authorship: authorshipList.results});
 
     setSearchHistory(searchHistoryStorage);
     setAuthor(authorObj);
     setAuthorshipList(authorshipList.results);
+    setLoading(false);
+    setSearchQuery('');
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -199,9 +185,14 @@ function Pesquisa() {
                 placeholder="Digite sua pesquisa..." 
                 value={searchQuery}
                 onChange={handleSearchChange}
+                className={styles.searchInput}
             />
-            <button type="submit">Pesquisar</button>
-
+            {loading ? (
+              <button type="button" className={styles.loadingButton} disabled>
+                  <span className={styles.loadingSpinner}></span></button>
+            ) : (
+              <button type="submit" className={styles.searchButton}><FontAwesomeIcon icon={faSearch} /></button>
+            )}
             {suggestions.length > 0 && (
             <ul className={styles.suggestionsList}>
                 {suggestions.map((suggestion, index) => (
@@ -227,7 +218,7 @@ function Pesquisa() {
           <h1>Mostrando dados atualmente de</h1>
           <div className={styles.nameAuthor}>
               <p>{author? author.display_name : 'Carregando...'}</p>
-              <div onClick={getLastSearch}>
+              <div onClick={getLastSearch} className={styles.lastSearch}>
                 <FontAwesomeIcon icon={faChevronLeft}/>
               </div>
           </div>
@@ -261,7 +252,7 @@ function Pesquisa() {
                         onRequestClose={closeModal} 
                         author={author}
                         coAuthor={coAutorList} 
-                    />
+                      />
                     </div>
                   </div>
                 </div>

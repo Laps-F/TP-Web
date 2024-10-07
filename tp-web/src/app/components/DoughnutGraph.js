@@ -12,7 +12,7 @@ const CitationChart = ({ authorCitations, coAuthorCitations }) => {
     datasets: [
       {
         data: [authorCitations, coAuthorCitations],
-        backgroundColor: ['#6C4AB6', '#1e87ff'], // cores para os segmentos
+        backgroundColor: ['#6C4AB6', '#1e87ff'], 
         hoverBackgroundColor: ['#4B2991', '#0077ff'],
         borderWidth: 2,
       },
@@ -20,7 +20,7 @@ const CitationChart = ({ authorCitations, coAuthorCitations }) => {
   };
   
   const options = {
-    cutout: '70%', // para criar o espaço no centro
+    cutout: '70%',  
     plugins: {
       legend: {
         display: false,
@@ -30,7 +30,6 @@ const CitationChart = ({ authorCitations, coAuthorCitations }) => {
 
   return (
     <div className={styles.graphContainer}>
-      {/* Citações como Co-Autor */}
       <div className={styles.citacoes}>
         <p>Total Citações como Co-Autor</p>
         <div className={styles.circle}>
@@ -38,11 +37,10 @@ const CitationChart = ({ authorCitations, coAuthorCitations }) => {
         </div>
       </div>
 
-      <div className={styles.graph}> {/* Define o tamanho do gráfico */}
+      <div className={styles.graph}> 
         <Doughnut data={data} options={options} />
       </div>
 
-      {/* Citações como Autor */}
       <div className={styles.citacoes}>
         <p>Total Citações como Autor</p>
         <div className={styles.circle}>

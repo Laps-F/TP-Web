@@ -1,11 +1,11 @@
-import styles from './ArticleModal.module.css'; // Importando o mesmo arquivo de estilo
+import styles from './ArticleModal.module.css'; 
 
-const Modal = ({ isOpen, onClose, article, authorStats}) => {
+const Modal = ({ isOpen, onClose, article}) => {
     if (!isOpen) return null;
   
     const handleBackdropClick = (event) => {
         if (event.target === event.currentTarget) {
-          onClose(); // Fecha o modal ao clicar fora dele
+          onClose(); 
         }
     };
 

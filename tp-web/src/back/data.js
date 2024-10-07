@@ -31,7 +31,7 @@ export async function fetchAuthorFromOpenAlex(query) {
 }
 
 export async function fetchAuthorshipFromOpenAlex(id){
-    const apiURL = `https://api.openalex.org/works?filter=authorships.author.id:${id}&per-page=5`;
+    const apiURL = `https://api.openalex.org/works?filter=authorships.author.id:${id}&per-page=25`;
 
     try {
         const response = await fetch(apiURL);
@@ -45,14 +45,6 @@ export async function fetchAuthorshipFromOpenAlex(id){
     } catch(error) {
         console.error('Erro ao buscar dados da API:', error);
     }
-}
-
-function formatDate(dateString) {
-    const dateObj = new Date(dateString);
-    const day = dateObj.getDate();
-    const month = dateObj.getMonth() + 1; // Adicione 1 porque os meses começam em 0
-    const year = dateObj.getFullYear();
-    return `${day}/${month}/${year}`;
 }
 
 export default fetchSuggestedAuthors;

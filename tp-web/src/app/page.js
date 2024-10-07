@@ -2,6 +2,8 @@
 
 import { useState} from 'react';
 import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import fetchSuggestedAuthors, { fetchAuthorFromOpenAlex, fetchAuthorshipFromOpenAlex} from '@/back/data';
 import styles from './page.module.css';
@@ -13,6 +15,7 @@ function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [author, setAuthor] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -28,20 +31,19 @@ function Home() {
 
   async function handleSearch (e) {
     e.preventDefault();
+    setLoading(true);
+
     setSuggestions([]);
     const authorObj = await fetchAuthorFromOpenAlex(author.id.split('/').pop())
     const authorshipList = await fetchAuthorshipFromOpenAlex(author.id.split('/').pop())
 
-    console.log(authorshipList);
-    console.log(authorObj)
     let searchHistory = [];
-    searchHistory.push({author: authorObj, authorship: authorshipList});
-
-    sessionStorage.setItem("searchHistory", JSON.stringify(searchHistory));
-    sessionStorage.setItem('authorDetails', JSON.stringify(authorObj));
-    sessionStorage.setItem('authorshipListDetails', JSON.stringify(authorshipList.results));
+    searchHistory.push({author: authorObj, authorship: authorshipList.results});
 
     router.push('/pesquisa');
+
+    sessionStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    setLoading(false);
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -56,15 +58,21 @@ function Home() {
 
       <form className={styles.searchContainer} onSubmit={handleSearch}>
         <input 
-          type="text" 
-          className={styles.searchInput}
-          placeholder="Digite sua pesquisa..." 
-          value={searchQuery}
-          onChange={handleSearchChange}
+            type="text" 
+            placeholder="Digite sua pesquisa..." 
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className={styles.searchInput}
         />
-        <button className={styles.searchButton} type="submit">Pesquisar</button>
+        {loading ? (
+          <button type="button" className={styles.loadingButton} disabled>
+              <span className={styles.loadingSpinner}></span></button>
+        ) : (
+          <button type="submit" className={styles.searchButton}><FontAwesomeIcon icon={faSearch} /></button>
+        )}
+        
 
-        {suggestions.length > 0 && (
+        {suggestions && suggestions.length > 0 && (
           <ul className={styles.suggestionsList}>
             {suggestions.map((suggestion, index) => (
               <li 

@@ -32,7 +32,7 @@ function ArticlesList({ articles, authorStats} ) {
                     />
                 ))
             ) : (
-                <p>Loading articles...</p> // Mensagem de carregamento ou fallback
+                <p>Loading articles...</p> 
             )}
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} article={selectedArticle} authorStats={authorStats}/>

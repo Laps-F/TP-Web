@@ -1,49 +1,80 @@
-/* Estilos gerais para o container */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
     min-height: 100vh; 
-    padding: 20px; /* Adicionando padding para evitar elementos grudados nas bordas */
-    box-sizing: border-box; /* Garantir que padding seja contabilizado corretamente */
+    padding: 20px;  
+    box-sizing: border-box; 
 }
 
-/* Estilos do título */
 .title {
     font-size: 2rem;
     text-align: center;
     margin-bottom: 20px;
 }
 
-/* Estilos da área de busca */
 .searchContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     margin-bottom: 220px;
-    position: relative;
+    display: flex;
+    position: relative; 
     width: 100%;
     max-width: 500px;
 }
 
 .searchInput {
-    width: 70%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
+    width: 100%;
+    padding: 10px 40px 10px 15px;  
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
 .searchButton {
-    width: 30%;
-    padding: 10px;
-    font-size: 1rem;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); 
+    background: none; 
+    border: none; 
+    font-size: 18px;     
     cursor: pointer;
+    color: #333;     
+    padding: 0; 
+}
+
+.searchButton:focus {
+    outline: none; 
+}
+
+.loadingButton {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: default;
+    padding: 0;
+    color: #333;
+    display: flex;
+    align-items: center;  
+}
+
+.loadingSpinner {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-top: 2px solid #333;
+    border-radius: 50%;
+    width: 18px;  
+    height: 18px;
+    animation: spin 0.6s linear infinite; 
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .suggestionsList {
@@ -63,7 +94,6 @@
     border-bottom: 1px solid var(--highlight-color);
 }
 
-/* Estilos para os patrocinadores */
 .sponsorsContainer {
     display: flex;
     justify-content: space-between;
@@ -74,17 +104,11 @@
     max-width: 500px;
 }
 
-/* Consultas de mídia para responsividade */
 @media (max-width: 768px) {
     .searchContainer {
         flex-direction: column;
-        align-items: stretch; /* Ajusta para ficar em coluna */
-        margin-bottom: 100px; /* Reduz o espaço inferior */
-    }
-
-    .searchInput, .searchButton {
-        width: 100%; /* Botão e input ocupam 100% do espaço */
-        margin-bottom: 10px; /* Adiciona espaçamento entre eles */
+        align-items: stretch;  
+        margin-bottom: 100px; 
     }
 
     .sponsorsContainer {
@@ -98,7 +122,7 @@
 
 @media (max-width: 480px) {
     .title {
-        font-size: 1.5rem; /* Diminui o tamanho da fonte em telas menores */
+        font-size: 1.5rem; 
     }
 
     .searchContainer {
@@ -106,7 +130,7 @@
     }
 
     .sponsorsContainer img {
-        width: 100px; /* Diminui o tamanho das imagens dos patrocinadores em telas muito pequenas */
+        width: 100px; 
         flex-direction: row;
         justify-content: center;
     }
